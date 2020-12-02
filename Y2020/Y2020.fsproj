@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="Day1.fs" />
+        <Compile Include="Day2.fs" />
+        <Compile Include="Program.fs" />
+        <Content Include="Day2Input.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FsToolkit.ErrorHandling" Version="2.0.0" />
+    </ItemGroup>
+
+</Project>
