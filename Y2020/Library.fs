@@ -56,3 +56,6 @@ module String =
     |> List.map fromCharList
 
 
+module Validation =
+  open FsToolkit.ErrorHandling
+  let isOk = Result.isOk

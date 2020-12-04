@@ -7,17 +7,15 @@ module Day4 =
   module Common =
     let loadLines = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Day4Input.txt") |> List.ofSeq
 
-
   module Part1 =
     type UnvalidatedPassport = List<string * string>
 
     let parseInput input : List<UnvalidatedPassport> =
       input
       |> List.splitMultipleOn ((=) "") // split into passports
-      |> List.map ( List.collect (String.splitMultipleOnChar ' ') >> List.map (String.splitOnceOnChar ':') )
+      |> List.map ( List.collect (String.splitMultipleOnChar ' ') >> List.map (String.splitOnceOnChar ':') ) // map each passport into (key, value) strings
 
-    let allFields = ["byr"; "iyr"; "eyr"; "hgt"; "hcl"; "ecl"; "pid"; "cid"]
-    let requiredFields = List.filter ((<>) "cid") allFields
+    let requiredFields = ["byr"; "iyr"; "eyr"; "hgt"; "hcl"; "ecl"; "pid"]
 
     let isPassportValid (passport : UnvalidatedPassport) =
       let fieldsInPassport = passport |> List.map (fun (fieldName, _) -> fieldName)
@@ -41,13 +39,12 @@ module Day4 =
     let matchHeight s =
       FsRegEx.matches "(^([0-9][0-9])in$|^([0-9][0-9][0-9])cm$)" s
       |> Array.tryHead // only interested in the first match
-      |> Option.map (fun n ->
-          match n.Groups() |> Array.map (fun group -> group.Value) with
+      |> Option.bind (fun fsMatch ->
+          match fsMatch.Groups() |> Array.map (fun group -> group.Value) with
           | [| _; _; inchValue; "" |] -> inchValue |> parseIntO |> Option.bind (intIsInRangeInclusiveO 59 76) |> Option.map Inch
           | [| _; _; ""; cmValue |]   -> cmValue   |> parseIntO |> Option.bind (intIsInRangeInclusiveO 150 193) |> Option.map Centimetre
           | _ -> None)
-          |> Option.flatten
-          |> Result.requireSome "Invalid height"
+      |> Result.requireSome "Invalid height"
 
     let matchHairColour s =
       FsRegEx.matches "^#([0-9|a-f][0-9|a-f][0-9|a-f][0-9|a-f][0-9|a-f][0-9|a-f])$" s
@@ -76,6 +73,8 @@ module Day4 =
       | PasswordId of string
       | Cid of string
 
+    type ValidPassport = List<Property>
+
     let parseProperty (fieldName, valueString) =
       match fieldName with
       | "byr" -> matchYear "BirthDate" valueString 1920 2002 |> Result.map BirthYear
@@ -86,15 +85,10 @@ module Day4 =
       | "ecl" -> matchEyeColour valueString |> Result.map EyeColour
       | "pid" -> matchPasswordId valueString |> Result.map PasswordId
       | "cid" -> Ok <| Cid valueString
-
       | _ -> Error "Unknown field"
 
-    let parsePassport (passport : UnvalidatedPassport) =
-      passport
-      |> List.map parseProperty
-      |> List.sequenceResultA
-
-    let isValidPassport = parsePassport >> Result.isOk
+    let parsePassport (passport : UnvalidatedPassport) : Validation<ValidPassport, string> =
+      passport |> List.map parseProperty |> List.sequenceResultA
 
   module Run =
     let run () =
@@ -103,6 +97,6 @@ module Day4 =
       |> List.filter Part1.isPassportValid
       |> fun l -> l |> List.length |> printfn "Valid in part 1: %A passports"; l
       |> List.map Part2.parsePassport
-      |> List.filter Result.isOk
+      |> List.filter Validation.isOk
       |> List.length
       |> printfn "Valid in part 2: %A passports"
