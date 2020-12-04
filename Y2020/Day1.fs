@@ -1,4 +1,6 @@
-module Day1
+namespace AdventOfCode
+
+module Day1 =
 
   let inputData = [
       1728

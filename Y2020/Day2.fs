@@ -1,46 +1,48 @@
-module Day2
+namespace AdventOfCode
 
-open System.Text.RegularExpressions
+module Day2 =
 
-module Part1 =
+  open System.Text.RegularExpressions
 
-  let loadLines () = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Day2Input.txt")
+  module Part1 =
 
-  let parseInput lines =
-    lines
-    |> Seq.map (fun line ->
-        let m = Regex.Match (line, "^([0-9]+)[-]([0-9]+).(.)[:].([a-z]+)")
+    let loadLines () = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Day2Input.txt")
 
-        let minCount = (m.Groups.[1].Value) |> int
-        let maxCount = (m.Groups.[2].Value) |> int
-        let char = (m.Groups.[3].Value) |> char
-        let password = (m.Groups.[4].Value)
+    let parseInput lines =
+      lines
+      |> Seq.map (fun line ->
+          let m = Regex.Match (line, "^([0-9]+)[-]([0-9]+).(.)[:].([a-z]+)")
 
-        (minCount, maxCount, char, password) )
+          let minCount = (m.Groups.[1].Value) |> int
+          let maxCount = (m.Groups.[2].Value) |> int
+          let char = (m.Groups.[3].Value) |> char
+          let password = (m.Groups.[4].Value)
 
-  let loadAndParseInput = loadLines >> parseInput
+          (minCount, maxCount, char, password) )
 
-  let countValidLines predicate lines =
-    lines
-    |> Seq.filter predicate
-    |> Seq.length
+    let loadAndParseInput = loadLines >> parseInput
+
+    let countValidLines predicate lines =
+      lines
+      |> Seq.filter predicate
+      |> Seq.length
 
 
-  let part1 =
+    let part1 =
 
-    let isLineValid (minCount, maxCount, char, password : string) =
-      let count = password |> Seq.filter ((=) char) |> Seq.length
-      (count >= minCount) && (count <= maxCount)
+      let isLineValid (minCount, maxCount, char, password : string) =
+        let count = password |> Seq.filter ((=) char) |> Seq.length
+        (count >= minCount) && (count <= maxCount)
 
-    loadAndParseInput () |> countValidLines isLineValid
+      loadAndParseInput () |> countValidLines isLineValid
 
-  let part2 =
+    let part2 =
 
-    let isLineValid (pos1, pos2, char, password : string) =
-      let charList = [password.[pos1-1]; password.[pos2-1]]
-      charList |> List.filter ((=) char) |> List.length |> (=) 1
+      let isLineValid (pos1, pos2, char, password : string) =
+        let charList = [password.[pos1-1]; password.[pos2-1]]
+        charList |> List.filter ((=) char) |> List.length |> (=) 1
 
-    loadAndParseInput () |> countValidLines isLineValid
+      loadAndParseInput () |> countValidLines isLineValid
 
 
 

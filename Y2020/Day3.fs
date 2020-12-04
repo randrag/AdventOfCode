@@ -1,55 +1,57 @@
-module Day3
+namespace AdventOfCode
 
-open Microsoft.FSharp.Collections
-open FsToolkit.ErrorHandling
+module Day3 =
 
-module Common =
+  open Microsoft.FSharp.Collections
+  open FsToolkit.ErrorHandling
 
-  let loadLines () = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Day3Input.txt")
-  let parseLine (line : string) = line |> Seq.map (fun c -> c = '#') |> List.ofSeq
-  let treemap = loadLines () |> Seq.map parseLine |> List.ofSeq
+  module Common =
 
-module Part1 =
-  let isTreeAtX (line : List<bool>) x = line.[x % (List.length line)]
+    let loadLines () = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Day3Input.txt")
+    let parseLine (line : string) = line |> Seq.map (fun c -> c = '#') |> List.ofSeq
+    let treemap = loadLines () |> Seq.map parseLine |> List.ofSeq
 
-  let isTreeAtXY treeMap (x, y) = option {
-    let! row = treeMap |> List.tryItem y
-    return isTreeAtX row x
-    }
+  module Part1 =
+    let isTreeAtX (line : List<bool>) x = line.[x % (List.length line)]
 
-  let scanMap (dx, dy) treeMap : int =
+    let isTreeAtXY treeMap (x, y) = option {
+      let! row = treeMap |> List.tryItem y
+      return isTreeAtX row x
+      }
 
-    let rec inner acc (x, y) =
-      match isTreeAtXY treeMap (x, y) with
-      | Some true -> inner (acc + 1) (x + dx, y + dy)
-      | Some false -> inner acc (x + dx, y + dy)
-      | None -> acc
+    let scanMap (dx, dy) treeMap : int =
 
-    inner 0 (dx, dy)
+      let rec inner acc (x, y) =
+        match isTreeAtXY treeMap (x, y) with
+        | Some true -> inner (acc + 1) (x + dx, y + dy)
+        | Some false -> inner acc (x + dx, y + dy)
+        | None -> acc
 
-module Part2 =
-  let slopes = [ (1, 1); (3, 1); (5, 1); (7, 1); (1, 2) ]
+      inner 0 (dx, dy)
 
-module Run =
+  module Part2 =
+    let slopes = [ (1, 1); (3, 1); (5, 1); (7, 1); (1, 2) ]
 
-    let run () =
-      let treemap = Common.treemap
+  module Run =
 
-      let stopWatch = System.Diagnostics.Stopwatch.StartNew()
+      let run () =
+        let treemap = Common.treemap
 
-      let count = treemap |> Part1.scanMap (3, 1)
+        let stopWatch = System.Diagnostics.Stopwatch.StartNew()
 
-      printfn "In part 1 you will hit %i trees." count
+        let count = treemap |> Part1.scanMap (3, 1)
 
-      printfn "That took %f ms" stopWatch.Elapsed.TotalMilliseconds
-      stopWatch.Restart()
+        printfn "In part 1 you will hit %i trees." count
 
-      let product =
-        Part2.slopes
-        |> List.map (fun slope -> treemap |> Part1.scanMap slope |> fun i -> bigint i)
-        |> List.fold (*) (bigint 1)
+        printfn "That took %f ms" stopWatch.Elapsed.TotalMilliseconds
+        stopWatch.Restart()
 
-      printfn "In part 2 the product of trees hit on slopes is %A" product
+        let product =
+          Part2.slopes
+          |> List.map (fun slope -> treemap |> Part1.scanMap slope |> fun i -> bigint i)
+          |> List.fold (*) (bigint 1)
 
-      printfn "That took %f ms" stopWatch.Elapsed.TotalMilliseconds
-      stopWatch.Stop()
+        printfn "In part 2 the product of trees hit on slopes is %A" product
+
+        printfn "That took %f ms" stopWatch.Elapsed.TotalMilliseconds
+        stopWatch.Stop()
