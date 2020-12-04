@@ -6,20 +6,11 @@ open FsToolkit.ErrorHandling
 module Common =
 
   let loadLines () = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Day3Input.txt")
-
-  let parseLine (line : string) =
-    line
-    |> Seq.map (fun c -> c = '#')
-    |> List.ofSeq
-
-  let treemap =
-    loadLines ()
-    |> Seq.map parseLine
-    |> List.ofSeq
+  let parseLine (line : string) = line |> Seq.map (fun c -> c = '#') |> List.ofSeq
+  let treemap = loadLines () |> Seq.map parseLine |> List.ofSeq
 
 module Part1 =
-  let isTreeAtX (line : List<bool>) x =
-    line.[x % (List.length line)]
+  let isTreeAtX (line : List<bool>) x = line.[x % (List.length line)]
 
   let isTreeAtXY treeMap (x, y) = option {
     let! row = treeMap |> List.tryItem y
@@ -38,7 +29,6 @@ module Part1 =
 
 module Part2 =
   let slopes = [ (1, 1); (3, 1); (5, 1); (7, 1); (1, 2) ]
-
 
 module Run =
 

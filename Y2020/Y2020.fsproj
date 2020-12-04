@@ -11,10 +11,13 @@
         <Content Include="Day2Input.txt" />
         <Compile Include="Day3.fs" />
         <Content Include="Day3Input.txt" />
+        <Compile Include="Day4.fs" />
         <Compile Include="Program.fs" />
+        <Content Include="Day4Input.txt" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="FsRegEx" Version="0.7.2" />
       <PackageReference Include="FsToolkit.ErrorHandling" Version="2.0.0" />
     </ItemGroup>
 

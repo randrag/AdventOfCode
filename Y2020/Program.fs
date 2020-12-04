@@ -5,5 +5,5 @@ open System
 
 [<EntryPoint>]
 let main argv =
-    do Day3.Run.run ()
+    do Day4.Run.run ()
     0 // return an integer exit code
