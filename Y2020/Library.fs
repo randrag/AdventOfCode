@@ -1,5 +1,11 @@
 namespace AdventOfCode
 
+[<AutoOpen>]
+module OutputToConsole =
+    let ps s x = printfn "%s%A" s x
+    let pso s x = ps s x; x
+
+
 // from fssnip.net
 module TryParser =
     // convenient, functional TryParse wrappers returning option<'a>
