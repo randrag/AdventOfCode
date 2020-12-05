@@ -4,12 +4,12 @@ module Day5 =
   let input = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Day5Input.txt") |> List.ofSeq
 
   let toNumber l =
-    let rec inner acc multiplier remaining =
+    let rec inner multiplier remaining =
       match remaining with
-      | [] -> acc
-      | x::xs -> inner (acc + x * multiplier) (multiplier * 2) xs
+      | [] -> 0
+      | x::xs -> x * multiplier  +  inner (multiplier * 2) xs
 
-    inner 0 1 <| List.rev l
+    inner 1 <| List.rev l
 
   let getId = Seq.map (fun c -> if (c = 'B') || (c = 'R') then 1 else 0) >> List.ofSeq >> toNumber
 
