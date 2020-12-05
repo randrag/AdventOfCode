@@ -2,7 +2,7 @@ namespace AdventOfCode
 module Day5 =
   module Run =
     let input = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Day5Input.txt") |> List.ofSeq
-    let getRowInfo s = Seq.take 7 s |> Seq.map (fun c -> if c = 'B' then 1 else 0) |> List.ofSeq
+    let getRowInfo s    = Seq.take 7 s |> Seq.map (fun c -> if c = 'B' then 1 else 0) |> List.ofSeq
     let getColumnInfo s = Seq.skip 7 s |> Seq.map (fun c -> if c = 'R' then 1 else 0) |> List.ofSeq
 
     let toNumber l =
@@ -13,7 +13,7 @@ module Day5 =
 
       inner 0 1 <| List.rev l
 
-    let getRow = getRowInfo >> toNumber
+    let getRow    = getRowInfo >> toNumber
     let getColumn = getColumnInfo >> toNumber
     let getSeat s = getRow s, getColumn s
     let getSeatId (row, column) = row * 8 + column
