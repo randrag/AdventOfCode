@@ -19,7 +19,6 @@ module Day5 =
     |> fun l -> l |> List.max |> ps "The maximum seat is: "; l
     |> List.sort
     |> List.pairwise
-    |> List.filter (fun (a,b) -> b - a > 1)
-    |> List.head
+    |> List.find (fun (a,b) -> b - a > 1)
     |> fun (a, _) -> a + 1
     |> ps "My seat id is: "
