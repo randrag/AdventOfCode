@@ -18,6 +18,7 @@
         <Content Include="Day3Input.txt" />
         <Content Include="Day4Input.txt" />
         <Content Include="Day5Input.txt" />
+        <Content Include="Day6Input.txt" />
     </ItemGroup>
 
     <ItemGroup>
