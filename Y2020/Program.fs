@@ -3,5 +3,5 @@
 module Main =
   [<EntryPoint>]
   let main _ =
-      do Day6.run ()
+      do Day7.run ()
       0 // return an integer exit code

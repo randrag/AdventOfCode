@@ -26,6 +26,17 @@ module TryParser =
     let (|Double|_|) = parseDoubleO
 
 module List =
+  /// shadow built in functions to get signatures correct
+  let ofSeq = List.ofSeq : seq<'a> -> List<'a>
+  let map = List.map : ('a -> 'b) -> List<'a> -> List<'b>
+
+  ///Apply a function to each element of the collection, threading an accumulator argument through the computation.
+  /// Apply the function to the first two elements of the list.
+  /// Then feed this result into the function along with the third element and so on. Return the final result.
+  /// If the input function is f and the elements are i0...iN then computes f (... (f i0 i1) i2 ...) iN.
+  ///
+  /// Full name: Microsoft.FSharp.Collections.List.reduce
+  let reduce = List.reduce : ('a -> 'a -> 'a) -> List<'a> -> 'a
 
   /// gives two lists back, excluding the splitting element
   let splitOnceOn (f : 'a -> bool) l =
