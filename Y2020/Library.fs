@@ -2,8 +2,10 @@ namespace AdventOfCode
 
 [<AutoOpen>]
 module OutputToConsole =
+    let p s = printfn s
     let ps s x = printfn "%s%A" s x
     let pso s x = ps s x; x
+    let nl = printfn ""
 
 
 // from fssnip.net
@@ -93,13 +95,13 @@ module LeftPipe =
     let add = (+)
     let mul = (*)
 
-    add 1  ^< add 2  ^< mul 4  ^< add 3 4 |> ps "1 " // 7 * 4 + 2 + 1 = 31
-    add 1 **< add 2 **< mul 4 **< add 3 4 |> ps "2 " // 7 * 4 + 2 + 1 = 31
-    add 1 *** add 2 *** mul 4 *** add 3 4 |> ps "3 " // 7 * 4 + 2 + 1 = 31
-
+//    add 1  ^< add 2  ^< mul 4  ^< add 3 4 |> ps "1 " // 7 * 4 + 2 + 1 = 31
+//    add 1 **< add 2 **< mul 4 **< add 3 4 |> ps "2 " // 7 * 4 + 2 + 1 = 31
+//    add 1 *** add 2 *** mul 4 *** add 3 4 |> ps "3 " // 7 * 4 + 2 + 1 = 31
+//
     // 2 + (3 + 4) * 5 + 2 = 39
-    2 |> add **<| add 2 **<| mul 5 **<| add 3 4 |> ps "3 "
-    2 |> add *** add 2 *** mul 5 *** add 3 4 |> ps "3 "
-    2 |> add ^<| add 2 ^<| mul 5 ^<| add 3 4 |> ps "best? "
-    2 |> add ^^ add 2 ^^ mul 5 ^^ add 3 4 |> ps "3 "
+//    2 |> add **<| add 2 **<| mul 5 **<| add 3 4 |> ps "3 "
+//    2 |> add *** add 2 *** mul 5 *** add 3 4 |> ps "3 "
+//    2 |> add ^<| add 2 ^<| mul 5 ^<| add 3 4 |> ps "best? "
+//    2 |> add ^^ add 2 ^^ mul 5 ^^ add 3 4 |> ps "3 "
 

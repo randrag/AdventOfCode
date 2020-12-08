@@ -10,7 +10,7 @@ module Day7 =
   // parsing of input
   let input = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Day7Input.txt") |> List.ofSeq
 
-  let getMayContain (s : string) =
+  let getMustContain (s : string) =
     let firstSpacePos = s.IndexOf(" ")
     let qtyString = s.Substring(0,firstSpacePos)
     let endPos = s.IndexOf(" bag")
@@ -21,13 +21,13 @@ module Day7 =
   let parseLine (s : string) =
     let splitPos = s.IndexOf(" bags contain ")
     let parentColour = s.Substring (0 , splitPos)
-    let mayContainString = s.Substring( splitPos + Seq.length(" bags contain ") )
-    let mayContainStringL =
-      match mayContainString with
+    let mustContainString = s.Substring( splitPos + Seq.length(" bags contain ") )
+    let mustContainStringL =
+      match mustContainString with
       | "no other bags." -> []
       | otherBags -> otherBags.Split(",") |> List.ofArray |> List.map (fun s -> s.Trim(' '))
 
-    let mayContainL = mayContainStringL |> List.map getMayContain
+    let mayContainL = mustContainStringL |> List.map getMustContain
     { ParentColour = parentColour; MustContainL = mayContainL}
 
 
