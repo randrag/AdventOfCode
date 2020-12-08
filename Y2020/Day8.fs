@@ -1,113 +1,78 @@
 namespace AdventOfCode
 open FsToolkit.ErrorHandling
 
-type Position = int
-type OpCode = string
-type Operand = int
-type State = int * int // program counter * accumulator
+module Day8v2 =
+  type Location = int
+  type Instruction = | Acc of int | Jmp of int | Nop of int
+  type Program = Map<Location, Instruction> // map for fast random access
+  type Status = Running | WouldLoop | Terminated
+  type State = { pc : int; acc : int }
+  type FullState = { State : State; ExecutedLocations : Set<int>; Status : Status }  // program counter * accumulator
 
-type Instruction = Position * OpCode * Operand
-type Program = array<Instruction> // array for fast random access
-module Day8 =
+  let  input () = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Day8Input.txt") |> List.ofSeq
 
-// parsing of input
-  let input = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Day8Input.txt") |> List.ofSeq
+  let parseOpCode = function | "acc" -> Acc | "jmp" -> Jmp | "nop" -> Nop | _ -> failwith "Invalid opcode"
 
-  let parseLine (s : string) =
-    let wordL = s.Split(' ') |> List.ofArray
-    match wordL with
-    | [opcode; operand] -> opcode, operand |> int
+  let parseLine (s : string) : Instruction =
+    match s.Split(' ') |> List.ofArray with
+    | ["acc"; operand] -> Acc (int operand)
+    | ["jmp"; operand] -> Jmp (int operand)
+    | ["nop"; operand] -> Nop (int operand)
     | _ -> failwith "Invalid input"
 
-  let parseProgram (sL : List<string>) =
-      sL
-      |> List.mapi (fun i s ->
-           let (opcode, operand) = parseLine s
-           (i, opcode, operand))
-      |> Array.ofList // for fast random access
-      |> pso "Program: "
+  let parseProgram (sL : List<string>) : Program =
+    sL
+    |> List.mapi (fun (l : Location) s -> (l, parseLine s))
+    |> Map.ofList // for fast random access
 
-  let executeInstruction acc instruction =
+  let executeInstruction (instruction : Instruction) state =
     match instruction with
-    | (programCounter, "acc", i) -> programCounter + 1, acc + i
-    | (programCounter, "nop", _) -> programCounter + 1, acc
-    | (programCounter, "jmp", o) -> programCounter + o, acc
-    | _ -> failwith "unknown instruction"
+    | Acc i -> { pc = state.pc + 1; acc = state.acc + i }
+    | Nop _ -> { pc = state.pc + 1; acc = state.acc     }
+    | Jmp i -> { pc = state.pc + i; acc = state.acc     }
 
-  let executeNextInstruction (program : Program) ( pc , acc ) =
-    if pc >= Array.length program then
-      failwithf "Program being interpreted terminated with state: %A" (pc, acc)
-    else
-      executeInstruction acc program.[pc]
+  let step (program : Program) (fullState : FullState) : FullState =
+    match fullState.Status with
+    | Running ->
+        let newState = executeInstruction (Map.find fullState.State.pc program) fullState.State
+        { State = newState
+          Status =
+            if newState.pc >= Map.count program then Terminated
+            elif Set.contains newState.pc fullState.ExecutedLocations then WouldLoop
+            else Running
+          ExecutedLocations = Set.add newState.pc fullState.ExecutedLocations }
+    | WouldLoop  -> fullState
+    | Terminated -> fullState
 
-  let rec runProgram (program : Program) (maxSteps : int) ((programCounter, acc) : State) =
-    match maxSteps with
-    | 0 -> programCounter, acc
-    | maxSteps ->
-        let newState = executeNextInstruction program (programCounter, acc)
-        runProgram program (maxSteps-1) newState
-
-  // returns Some instruction if changed, otherwise none
-  let swapOpcode ( instruction : Instruction ) =
-    match instruction with
-    | pos, "jmp", operand ->  Some (pos, "nop", operand)
-    | pos, "nop", operand ->  Some (pos, "jmp", operand)
+  let getSwappedOpcodeOption = function
+    | Jmp i -> Some (Nop i)
+    | Nop i -> Some (Jmp i)
     | _ -> None
 
-  let swapProgramInstruction (position : Position) (program : Program) = option {
-    let! newInstruction = swapOpcode program.[position]
-    let a = program |> Array.take position
-    let b = program |> Array.skip (position + 1)
-    return (Array.concat (seq { a; [| newInstruction |]; b } ) : Program)
-    }
+  let swapProgramInstruction (program : Program) (location : Location)  = option {
+    let! newInstruction = getSwappedOpcodeOption (Map.find location program)
+    return program |> Map.remove location |> Map.add location newInstruction }
+
+  let getPossiblePrograms (program : Program) =
+    [ 0.. Map.count program - 1 ]
+    |> List.map (swapProgramInstruction program)
+    |> List.filter Option.isSome
+    |> List.map Option.get
+
+  let rec runUntil (mustStop : FullState -> bool) program state =
+    if mustStop state then state else runUntil mustStop program (step program state )
 
   let run () =
-    let program = input |> parseProgram
+    let program = input () |> parseProgram
 
-    // Part 1, in imperative style with while loop
-    let mutable visitedLinesArray = Array.zeroCreate (Array.length program)
-    let mutable pc = 0
-    let mutable acc = 0
+    // part 1
+    let initialState = { State = { pc = 0; acc = 0 }; Status = Running; ExecutedLocations = Set.empty }
+    do runUntil (fun state -> state.Status = WouldLoop) program initialState
+       |> ps "Last state before repeat (part 1): "
 
-    let mutable lastPc = 0
-    let mutable lastAcc = 0
-
-    while visitedLinesArray.[pc] = 0 do
-      lastPc <- pc
-      lastAcc <- acc
-      visitedLinesArray.[pc] <- 1
-      let (pc', acc') = executeInstruction acc program.[pc]
-      pc <- pc'
-      acc <- acc'
-
-    ps "Part 1 result: pc, acc: " (lastPc, lastAcc)
-    nl
-
-    let possiblePrograms =
-      [ 0 .. ((Array.length program) - 1) ]
-      |> List.map (fun i -> swapProgramInstruction i program)
-      |> List.filter Option.isSome
-      |> List.map Option.get
-
-    let programCount = List.length possiblePrograms
-    let startingStateL =
-      [1 ..programCount]
-      |> List.map (fun _ -> (0, 0) : State)
-
-    let stepAll programL stateL =
-      List.map2 (fun program state -> executeNextInstruction program state ) programL stateL
-
-    let rec run' programs states =
-      let ns = stepAll programs states
-      run' programs ns
-
-    ps "Next states (unreached - result is currently in the exception): " (run' possiblePrograms startingStateL)
-
-    ()
-
-
-
-
-
-
-
+    // part 2
+    let possiblePrograms = getPossiblePrograms program
+    do possiblePrograms
+       |> List.map (fun program -> runUntil (fun state -> state.Status <> Running) program initialState)
+       |> List.filter (fun state -> state.Status = Terminated)
+       |> ps "Last state before terminating (part 2): "
