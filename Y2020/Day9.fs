@@ -16,7 +16,6 @@ module Day9 =
     let part1Answer =
       input
       |> List.windowed 26
-
       |> List.map (fun listToCheck ->
           match List.rev listToCheck with
           | newValue::previousValues ->
@@ -42,5 +41,7 @@ module Day9 =
             (smallest+ largest, Seq.sum candidateWindowL)  )
         |> Seq.filter (fun (_,c) -> c =  part1Answer)
         )
+    |> Seq.filter (Seq.isEmpty >> not)
+    |> Seq.head
     |> ps "Answer: "
 
