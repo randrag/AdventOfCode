@@ -40,6 +40,9 @@ module List =
   /// Full name: Microsoft.FSharp.Collections.List.reduce
   let reduce = List.reduce : ('a -> 'a -> 'a) -> List<'a> -> 'a
 
+  /// val windowed : windowSize:int -> list:'T list -> 'T list list
+  let windowed = List.windowed : int -> List<'a> -> List<List<'a>>
+
   /// gives two lists back, excluding the splitting element
   let splitOnceOn (f : 'a -> bool) l =
     let rec inner acc remaining =
