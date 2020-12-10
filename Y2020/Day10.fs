@@ -4,13 +4,13 @@ module Day10 =
 
   let  input  = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Input10.txt") |> List.ofSeq |> List.map int64
 
-  let addWallAndDevice l = List.concat [ [0L]; l; [List.max l + 3L] ]
+  let addWallAndDeviceJoltages l = List.concat [ [0L]; l; [List.max l + 3L] ]
 
   let run () =
 
     // Part 1
     input
-    |> addWallAndDevice
+    |> addWallAndDeviceJoltages
     |> List.sort
     |> List.pairwise
     |> List.map (fun (a,b) -> b - a) // get deltas
@@ -40,12 +40,6 @@ module Day10 =
               |> fun n -> if n = 0L then 1L else n // because 'device' has no downstream joltages
             inner (Map.add joltage pathCountFromThisJoltage downStreamPathCounts) xs
 
-      joltages
-      |> addPossibleNextJoltages
-      |> List.sortBy (fun (j,_) -> -j)
-      |> inner Map.empty
+      joltages |> addPossibleNextJoltages |> List.sortBy (fun (j,_) -> -j) |> inner Map.empty
 
-    input
-    |> addWallAndDevice // add wall and device outlets
-    |> getPathCountsToDevice
-    |> ps "Part 2 answer: "
+    input |> addWallAndDeviceJoltages |> getPathCountsToDevice |> ps "Part 2 answer: "
