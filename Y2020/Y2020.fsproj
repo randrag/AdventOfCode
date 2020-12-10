@@ -7,6 +7,7 @@
 
     <ItemGroup>
         <Compile Include="Library.fs" />
+        <Content Include="Input10c.txt" />
         <Compile Include="Day1.fs" />
         <Compile Include="Day2.fs" />
         <Compile Include="Day3.fs" />
@@ -16,6 +17,7 @@
         <Compile Include="Day7.fs" />
         <Compile Include="Day8.fs" />
         <Compile Include="Day9.fs" />
+        <Compile Include="Day10.fs" />
         <Compile Include="Program.fs" />
         <Content Include="Day2Input.txt" />
         <Content Include="Day3Input.txt" />
@@ -26,6 +28,8 @@
         <Content Include="Day8Input.txt" />
         <Content Include="Day9Input.txt" />
         <Content Include="Day9Input2.txt" />
+        <Content Include="Input10.txt" />
+        <Content Include="Input10b.txt" />
     </ItemGroup>
 
     <ItemGroup>

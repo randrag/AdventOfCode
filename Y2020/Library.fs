@@ -2,10 +2,15 @@ namespace AdventOfCode
 
 [<AutoOpen>]
 module OutputToConsole =
-    let p s = printfn s
+    open System
+
+    let p = printfn
     let ps s x = printfn "%s%A" s x
     let pso s x = ps s x; x
-    let nl = printfn ""
+    let pnl = printfn ""
+
+    let r = Console.ReadKey () |> ignore
+    let ro x = Console.ReadKey () |> ignore; x
 
 
 // from fssnip.net
@@ -43,6 +48,10 @@ module List =
   /// val windowed : windowSize:int -> list:'T list -> 'T list list
   let windowed = List.windowed : int -> List<'a> -> List<List<'a>>
 
+  let sort = List.sort : List<'a> -> List<'a>
+  let concat = List.concat : seq<List<'a>> -> List<'a>
+  let zip = List.zip : List<'a> -> List<'b> -> List<('a * 'b)>
+  let take = List.take : int -> List<'a> -> List<'a>
   /// gives two lists back, excluding the splitting element
   let splitOnceOn (f : 'a -> bool) l =
     let rec inner acc remaining =
@@ -88,23 +97,6 @@ module LeftPipe =
     // I want the Haskell $ operator
     // To associate right it must start with ** or ^
 
-    let ( **< ) = (<|)
-    let ( *** ) = (<|)
-    let ( ^< ) = (<|)
-    let ( ^^ ) = (<|)
-    let ( ^<| ) = (<|)
     let ( **<| ) = (<|)
-
-    let add = (+)
-    let mul = (*)
-
-//    add 1  ^< add 2  ^< mul 4  ^< add 3 4 |> ps "1 " // 7 * 4 + 2 + 1 = 31
-//    add 1 **< add 2 **< mul 4 **< add 3 4 |> ps "2 " // 7 * 4 + 2 + 1 = 31
-//    add 1 *** add 2 *** mul 4 *** add 3 4 |> ps "3 " // 7 * 4 + 2 + 1 = 31
-//
-    // 2 + (3 + 4) * 5 + 2 = 39
-//    2 |> add **<| add 2 **<| mul 5 **<| add 3 4 |> ps "3 "
-//    2 |> add *** add 2 *** mul 5 *** add 3 4 |> ps "3 "
-//    2 |> add ^<| add 2 ^<| mul 5 ^<| add 3 4 |> ps "best? "
-//    2 |> add ^^ add 2 ^^ mul 5 ^^ add 3 4 |> ps "3 "
+    let ( ^<| ) = (<|)
 
