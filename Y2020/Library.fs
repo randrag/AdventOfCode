@@ -72,9 +72,14 @@ module List =
 
     inner [[]] l
 
+module Seq =
+  open System
+
 module String =
   open System
   let fromCharList (cl : char list) = cl |> Array.ofList |> String
+  let fromCharSeq (cs : seq<char>) = cs |> Array.ofSeq |> String
+
 
   let splitOnceOnChar splitChar s =
     List.ofSeq s

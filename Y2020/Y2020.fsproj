@@ -18,18 +18,24 @@
         <Compile Include="Day8.fs" />
         <Compile Include="Day9.fs" />
         <Compile Include="Day10.fs" />
+        <Compile Include="Day11.fs" />
+        <Compile Include="Day12.fs" />
         <Compile Include="Program.fs" />
-        <Content Include="Day2Input.txt" />
-        <Content Include="Day3Input.txt" />
-        <Content Include="Day4Input.txt" />
-        <Content Include="Day5Input.txt" />
-        <Content Include="Day6Input.txt" />
-        <Content Include="Day7Input.txt" />
-        <Content Include="Day8Input.txt" />
-        <Content Include="Day9Input.txt" />
-        <Content Include="Day9Input2.txt" />
+        <Content Include="input02.txt" />
+        <Content Include="input03.txt" />
+        <Content Include="input04.txt" />
+        <Content Include="input05.txt" />
+        <Content Include="input06.txt" />
+        <Content Include="input07.txt" />
+        <Content Include="input08.txt" />
+        <Content Include="input09.txt" />
+        <Content Include="input09b.txt" />
         <Content Include="Input10.txt" />
         <Content Include="Input10b.txt" />
+        <Content Include="input11.txt" />
+        <Content Include="input11b.txt" />
+        <Content Include="input12a.txt" />
+        <Content Include="input12b.txt" />
     </ItemGroup>
 
     <ItemGroup>
