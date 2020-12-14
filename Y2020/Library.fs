@@ -7,7 +7,7 @@ module OutputToConsole =
     let p = printfn
     let ps s x = printfn "%s%A" s x
     let pso s x = ps s x; x
-    let pnl = printfn ""
+    let pnl () =  printfn ""
 
     let r = Console.ReadKey () |> ignore
     let ro x = Console.ReadKey () |> ignore; x
@@ -53,7 +53,7 @@ module List =
   let zip = List.zip : List<'a> -> List<'b> -> List<('a * 'b)>
   let take = List.take : int -> List<'a> -> List<'a>
   /// gives two lists back, excluding the splitting element
-  let splitOnceOn (f : 'a -> bool) l =
+  let splitOnceOnExcl (f : 'a -> bool) l =
     let rec inner acc remaining =
       match remaining with
       | []                     -> (List.rev acc, [])
@@ -62,18 +62,83 @@ module List =
 
     inner [] l
 
-  let splitMultipleOn (f : 'a -> bool) l : List<List<'a>> =
+  /// Splits a list into multiple lists at each position where an element matches the predicate
+  /// The element which matches the predicate is discarded
+  let splitMultipleOnExcl (f : 'a -> bool) l : List<List<'a>> =
     let rec inner acc remaining =
       match remaining with
       | [] -> acc |> List.filter (List.isEmpty >> not) |> List.rev
       | something ->
-          let (element, remaining) = splitOnceOn f something
+          let (element, remaining) = splitOnceOnExcl f something
           inner (element::acc) remaining
 
     inner [[]] l
 
-module Seq =
-  open System
+
+
+  /// Splits a list into two at the element where the predicate is first true.
+  /// Element which causes true predicate is placed in second list
+  /// Does not apply the predicate to the first element in the list - will not split to empty first list
+  /// e.g. [1; 2; 3; 1; 2; 3; 1; 2] split on 1 becomes [1; 2; 3], [1; 2; 3; 1; 2]
+  let splitOnceOnInclVx (isRear : 'a -> bool) l : List<'a> * List<'a> =
+    let rec inner front' possiblyRear = // front' because it is reversed
+      match possiblyRear with
+      | []    ->                                     [],  List.rev front'
+      | [x]   -> if isRear x then    front' |> List.rev, [x]
+                             else x::front' |> List.rev, []
+      | x::xs -> if isRear x then    front' |> List.rev, possiblyRear
+                             else inner (x::front') xs
+    inner [] l
+
+  /// Splits a list into two at the element where the predicate is first true.
+  /// Element which causes true predicate is placed in second list
+  /// Does not apply the predicate to the first element in the list - will not split to empty first list
+  /// e.g. [1; 2; 3; 1; 2; 3; 1; 2] split on 1 becomes [1; 2; 3], [1; 2; 3; 1; 2]
+  let splitOnceOnIncl (isRear : 'a -> bool) l : List<'a> * List<'a> =
+    let rec inner front' possiblyRear = // front' because it is reversed
+      match possiblyRear with
+      | []    ->                                     [],  List.rev front'
+      | [x]   -> if isRear x then    front' |> List.rev, [x]
+                             else x::front' |> List.rev, []
+      | x::xs -> if isRear x then    front' |> List.rev, possiblyRear
+                             else inner (x::front') xs
+
+    match l with
+    | []  -> [] , []
+    | [x] -> [x], []
+    | x::xs -> inner [] xs |> fun (front, rear) -> x::front, rear
+
+
+  let private testSplitOnceOnExcl () =
+      []           |> splitOnceOnIncl ((=) 1) = ([] ,          []          ) |> ps "True?: "
+      [1]          |> splitOnceOnIncl ((=) 2) = ([1],          []          ) |> ps "True?: "
+      [2]          |> splitOnceOnIncl ((=) 2) = ([2],          []          ) |> ps "True?: "
+      [1; 2]       |> splitOnceOnIncl ((=) 2) = ([1],          [2]         ) |> ps "True?: "
+      [1; 2; 2; 3] |> splitOnceOnIncl ((=) 2) = ([1],          [2; 2; 3]   ) |> ps "True?: "
+      [1; 2; 2; 3] |> splitOnceOnIncl ((=) 4) = ([1; 2; 2; 3], []          ) |> ps "True?: "
+      [1; 2; 2; 3] |> splitOnceOnIncl ((=) 1) = ([1; 2; 2; 3], []          ) |> ps "True?: "
+      [1; 2; 1; 2] |> splitOnceOnIncl ((=) 1) = ([1; 2],       [1; 2]      ) |> ps "True?: "
+
+  /// Splits a list into multiple lists at each position where an element matches the predicate
+  /// The element which matches the predicate is included as the head of the list after each split
+  let splitMultipleOnIncl (f : 'a -> bool) l : List<List<'a>> =
+    let rec inner acc remaining =
+      match remaining with
+      | [] -> acc |> List.filter (List.isEmpty >> not) |> List.rev
+      | something ->
+          let (front, remaining) = splitOnceOnIncl f something
+          inner (front::acc) remaining
+
+    inner [[]] l
+(*
+      []           |> List.splitWhere ((=) 1) = ([] ,          []          ) |> ps "Test splitWhere: "
+      [1]          |> List.splitWhere ((=) 2) = ([1],          []          ) |> ps "Test splitwhere: "
+      [2]          |> List.splitWhere ((=) 2) = ([] ,          [2]         ) |> ps "Test splitwhere: "
+      [1; 2]       |> List.splitWhere ((=) 2) = ([1],          [2]         ) |> ps "Test splitwhere: "
+      [1; 2; 2; 3] |> List.splitWhere ((=) 2) = ([1],          [2; 2; 3]   ) |> ps "Test splitwhere: "
+      [1; 2; 2; 3] |> List.splitWhere ((=) 4) = ([1; 2; 2; 3], []          ) |> ps "Test splitwhere: "
+      [1; 2; 2; 3] |> List.splitWhere ((=) 1) = ([],           [1; 2; 2; 3]) |> ps "Test splitwhere: "
+*)
 
 module String =
   open System
@@ -83,12 +148,12 @@ module String =
 
   let splitOnceOnChar splitChar s =
     List.ofSeq s
-    |> List.splitOnceOn ((=) splitChar)
+    |> List.splitOnceOnExcl ((=) splitChar)
     |> fun (a, b) -> fromCharList a, fromCharList b
 
   let splitMultipleOnChar splitChar (s : string) =
     List.ofSeq s
-    |> List.splitMultipleOn ((=) splitChar)
+    |> List.splitMultipleOnExcl ((=) splitChar)
     |> List.map fromCharList
 
 

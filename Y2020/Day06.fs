@@ -10,7 +10,7 @@ module Day6 =
 
     input
     |> List.map stringToCharList
-    |> List.splitMultipleOn ((=) [])
+    |> List.splitMultipleOnExcl ((=) [])
     |> List.map (List.reduce List.append >> List.distinct >> List.length)
     |> List.sum
     |> ps "Part 1 answer: "
@@ -19,7 +19,7 @@ module Day6 =
 
     input
     |> List.map stringToCharList
-    |> List.splitMultipleOn ((=) [])
+    |> List.splitMultipleOnExcl ((=) [])
     |> List.map (List.reduce intersect)
     |> List.map List.length
     |> List.sum
