@@ -48,6 +48,14 @@ module List =
   /// val windowed : windowSize:int -> list:'T list -> 'T list list
   let windowed = List.windowed : int -> List<'a> -> List<List<'a>>
 
+
+
+  /// Applies a key-generating function to each element of a list and yields a list of unique keys. Each unique key contains a list of all elements that match to this key
+  let groupBy2 = List.groupBy : ('a -> 'b) -> List<'a> -> List<('b * List<'a>)>
+  let groupBy = List.groupBy : ('a -> 'b) -> List<'a> -> List<('b * List<'a>)>
+
+  let filter = List.filter : ('a -> bool) -> List<'a> -> List<'a>
+
   let sort = List.sort : List<'a> -> List<'a>
   let concat = List.concat : seq<List<'a>> -> List<'a>
   let zip = List.zip : List<'a> -> List<'b> -> List<('a * 'b)>

@@ -63,6 +63,7 @@ module Day14 =
 
   module Part2 =
 
+
     let getOffsets bitPositions =
 
       let rec inner acc remainingBitPositions =
@@ -133,6 +134,7 @@ module Day14 =
           let x = addresses |> List.fold (fun map address -> Map.add address value map) state.Memory
           { state with Memory = x }
 
+    type myDU = | PushToEvoNo of int | Case2 of int
     let run () =
 
       input_b ()
@@ -143,5 +145,13 @@ module Day14 =
       |> List.map (fun (key, value) -> value)
       |> List.reduce (+)
       |> pso "Part 2 answer: "
+      |> ignore
+
+      let x = PushToEvoNo 1
+      let getFirstBitOutOfIt (s: string) = s.Split ' ' |> Seq.head
+      let p x = sprintf $"{x}"
+
+      printfn $"Test interpolating {getFirstBitOutOfIt (p x)} with name {nameof(x)} of type {typeof<myDU>} of typedef of {typedefof<myDU>}"
+
 
   let run () = Part2.run ()
