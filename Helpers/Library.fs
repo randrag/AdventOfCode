@@ -60,6 +60,14 @@ module List =
   let concat = List.concat : seq<List<'a>> -> List<'a>
   let zip = List.zip : List<'a> -> List<'b> -> List<('a * 'b)>
   let take = List.take : int -> List<'a> -> List<'a>
+
+  let unzip4 (l: List<('a * 'b * 'c * 'd)>) : List<'a> * List<'b> * List<'c> * List<'d> =
+    let la = l |> List.map (fun (a,_,_,_) -> a)
+    let lb = l |> List.map (fun (_,b,_,_) -> b)
+    let lc = l |> List.map (fun (_,_,c,_) -> c)
+    let ld = l |> List.map (fun (_,_,_,d) -> d)
+    (la,lb,lc,ld)
+
   /// gives two lists back, excluding the splitting element
   let splitOnceOnExcl (f : 'a -> bool) l =
     let rec inner acc remaining =

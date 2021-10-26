@@ -1,7 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+
+
+
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Helpers", "Helpers\Helpers.fsproj", "{4DCAE299-97B7-4BA0-B3B0-7BFB0B63BEEB}"
+EndProject
+
+
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Y2015", "Y2015\Y2015.fsproj", "{835DAD18-470F-4B5D-9BDB-3272C3AD47C9}"
+EndProject
+
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Y2020", "Y2020\Y2020.fsproj", "{EF72174E-B282-4D96-8BEB-74C1919C92EE}"
 EndProject
+
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +23,13 @@ Global
 		{EF72174E-B282-4D96-8BEB-74C1919C92EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF72174E-B282-4D96-8BEB-74C1919C92EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF72174E-B282-4D96-8BEB-74C1919C92EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{835DAD18-470F-4B5D-9BDB-3272C3AD47C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{835DAD18-470F-4B5D-9BDB-3272C3AD47C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{835DAD18-470F-4B5D-9BDB-3272C3AD47C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{835DAD18-470F-4B5D-9BDB-3272C3AD47C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DCAE299-97B7-4BA0-B3B0-7BFB0B63BEEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DCAE299-97B7-4BA0-B3B0-7BFB0B63BEEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DCAE299-97B7-4BA0-B3B0-7BFB0B63BEEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DCAE299-97B7-4BA0-B3B0-7BFB0B63BEEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

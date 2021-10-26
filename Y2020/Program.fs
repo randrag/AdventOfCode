@@ -4,5 +4,12 @@
 module Main =
   [<EntryPoint>]
   let main _ =
-      do Day15.run ()
+
+      let stopWatch = System.Diagnostics.Stopwatch.StartNew()
+
+      do Day18.run ()
+
+      printf "\n\n\n"
+      printfn "That took %f ms" stopWatch.Elapsed.TotalMilliseconds
+      stopWatch.Stop()
       0 // return an integer exit code
