@@ -13,7 +13,7 @@ module Day4 =
     let parseInput input : List<UnvalidatedPassport> =
       input
       |> List.splitMultipleOnExcl ((=) "") // split into passports
-      |> List.map ( List.collect (String.splitMultipleOnChar ' ') >> List.map (String.splitOnceOnChar ':') ) // map each passport into (key, value) strings
+      |> List.map ( List.collect (String.splitMultipleOnCharExcl ' ') >> List.map (String.splitOnceOnChar ':') ) // map each passport into (key, value) strings
 
     let requiredFields = ["byr"; "iyr"; "eyr"; "hgt"; "hcl"; "ecl"; "pid"]
 

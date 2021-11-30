@@ -10,14 +10,14 @@ module Day16 =
     (fields, yourTicket, nearbyTickets)
 
   let parseTicket (s : string) =
-    s |> String.splitMultipleOnChar ',' |> List.map int
+    s |> String.splitMultipleOnCharExcl ',' |> List.map int
 
   let parseRule (s : string) =
     let name = s.Substring (0, (s.IndexOf ':') )
     let fields = s.Substring (s.IndexOf ": " + 2)
     let allowedRanges =
       fields
-      |> String.splitMultipleOnChar ' '
+      |> String.splitMultipleOnCharExcl ' '
       |> List.filter (fun s -> s <> "or")
       |> List.map (String.splitOnceOnChar '-')
       |> List.map (fun (a,b) -> int a, int b)

@@ -3,7 +3,7 @@ namespace AdventOfCode
 module Day11 =
 
   module Common =
-    let  input  = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Input11.txt")
+    let  input () = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Input11.txt")
 
     type Position = int * int
 
@@ -43,7 +43,7 @@ module Day11 =
       map
       |> Map.toSeq
       |> Seq.groupBy (fun ((_, y), _) -> y)
-      |> Seq.map (fun (_, rows) -> rows |> Seq.map (fun (_,c) -> c ) |> String.fromCharSeq )
+      |> Seq.map (fun (_, rows) -> rows |> Seq.map (fun (_,c) -> c ) |> SeqOfChar.toString )
       |> Seq.map (sprintf "%s \n")
       |> Seq.reduce ( + )
       |> fun s -> "\n" + s
@@ -206,7 +206,7 @@ module Day11 =
     open Common
     let run () =
       let floorMap =
-        input
+        input ()
         |> Seq.mapi (fun y string -> // rows
              string |> Seq.mapi (fun x char -> // columns
                (x, y), char))
@@ -233,4 +233,3 @@ module Day11 =
 
 
       ()
-

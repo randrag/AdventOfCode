@@ -1,20 +1,20 @@
 namespace AdventOfCode
 
 module Day13 =
-  let  input_a  = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Input13a.txt")
-  let  input_b  = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Input13b.txt")
+  let  input_a ()  = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Input13a.txt")
+  let  input_b () = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Input13b.txt")
 
   module Part1 =
     let run () =
       let input = input_b
 
       let startingTime =
-        input
+        input ()
         |> Seq.head
         |> decimal
 
       let busList =
-        input
+        input ()
         |> Seq.skip 1
         |> Seq.head
         |> fun s -> s.Split ','
@@ -36,7 +36,7 @@ module Day13 =
     let run () =
 
       let numList =
-        input_b |> Seq.skip 1 |> Seq.head
+        input_b () |> Seq.skip 1 |> Seq.head
         |> fun s -> s.Split ','
         |> List.ofArray
         |> List.mapi (fun i s -> i,s)

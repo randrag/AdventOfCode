@@ -72,7 +72,7 @@ module List =
     (la,lb,lc,ld)
 
   /// gives two lists back, excluding the splitting element
-  let splitOnceOnExcl (f : 'a -> bool) l =
+  let splitOnceOnCharExcl (f : 'a -> bool) l =
     let rec inner acc remaining =
       match remaining with
       | []                     -> (List.rev acc, [])
@@ -88,7 +88,7 @@ module List =
       match remaining with
       | [] -> acc |> List.filter (List.isEmpty >> not) |> List.rev
       | something ->
-          let (element, remaining) = splitOnceOnExcl f something
+          let (element, remaining) = splitOnceOnCharExcl f something
           inner (element::acc) remaining
 
     inner [[]] l
@@ -159,22 +159,29 @@ module List =
       [1; 2; 2; 3] |> List.splitWhere ((=) 1) = ([],           [1; 2; 2; 3]) |> ps "Test splitwhere: "
 *)
 
-module String =
-  open System
-  let fromCharList (cl : char list) = cl |> Array.ofList |> String
-  let fromCharSeq (cs : seq<char>) = cs |> Array.ofSeq |> String
+open System
 
+module SeqOfChar =
+  let toString (cs : seq<char>) = cs |> Array.ofSeq |> String
+
+module ListOfChar =
+  let toString (cl : char list) = cl |> Array.ofList |> String
+
+module String =
 
   let splitOnceOnChar splitChar s =
     List.ofSeq s
-    |> List.splitOnceOnExcl ((=) splitChar)
-    |> fun (a, b) -> fromCharList a, fromCharList b
+    |> List.splitOnceOnCharExcl ((=) splitChar)
+    |> fun (a, b) -> ListOfChar.toString a, ListOfChar.toString b
 
-  let splitMultipleOnChar splitChar (s : string) =
+  let splitMultipleOnCharExcl splitChar (s : string) =
     List.ofSeq s
     |> List.splitMultipleOnExcl ((=) splitChar)
-    |> List.map fromCharList
+    |> List.map ListOfChar.toString
 
+  let toCharList = List.ofSeq
+  let indexOfChar (c : char) (s : string) = s.IndexOf c
+  let indexOfString (sub : string) (s : string) = s.IndexOf sub
 
 module Validation =
   open FsToolkit.ErrorHandling

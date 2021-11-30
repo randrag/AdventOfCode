@@ -1,6 +1,5 @@
 namespace Helpers
 
-open Fable.Core
 
 [<AutoOpen>]
 module Helpers =
@@ -24,12 +23,6 @@ module Helpers =
   let (>!!>) f1 f2 = f1 >> Result.map f2
 
   let generateCurrentDateTimeOffsetA () = async { return System.DateTimeOffset.Now }
-
-  /// From Safe stack source code
-  /// Input is the variable name - output "may" be your variable
-  [<Emit("unknown")>]
-  let getEnvironmentVariableO = System.Environment.GetEnvironmentVariable >> function null | "" -> None | x -> Some x
-
 
 
   // functional wrappers around some .net types

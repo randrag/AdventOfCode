@@ -5,5 +5,5 @@
 
   [<EntryPoint>]
   let main argv =
-      AdventOfCode.Y2015.Day03.Part2.run ()
+      AdventOfCode.Y2021.Day01.run ()
       0

@@ -2,14 +2,14 @@ namespace AdventOfCode
 
 module Day10 =
 
-  let  input  = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Input10.txt") |> List.ofSeq |> List.map int64
+  let  input () = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Input10.txt") |> List.ofSeq |> List.map int64
 
   let addWallAndDeviceJoltages l = List.concat [ [0L]; l; [List.max l + 3L] ]
 
   let run () =
 
     // Part 1
-    input
+    input ()
     |> addWallAndDeviceJoltages
     |> List.sort
     |> List.pairwise
@@ -42,4 +42,4 @@ module Day10 =
 
       joltages |> addPossibleNextJoltages |> List.sortBy (fun (j,_) -> -j) |> inner Map.empty
 
-    input |> addWallAndDeviceJoltages |> getPathCountsToDevice |> ps "Part 2 answer: "
+    input () |> addWallAndDeviceJoltages |> getPathCountsToDevice |> ps "Part 2 answer: "
