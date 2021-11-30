@@ -14,9 +14,10 @@ module OutputToConsole =
 
 
 // from fssnip.net
-module TryParser =
+[<AutoOpen>]
+module Parsing =
     // convenient, functional TryParse wrappers returning option<'a>
-    let tryParseWith (tryParseFunc: string -> bool * _) = tryParseFunc >> function
+    let private tryParseWith (tryParseFunc: string -> bool * _) = tryParseFunc >> function
         | true, v    -> Some v
         | false, _   -> None
 
@@ -27,10 +28,12 @@ module TryParser =
     // etc.
 
     // active patterns for try-parsing strings
-    let (|Date|_|)   = parseDateO
-    let (|Int|_|)    = parseIntO
-    let (|Single|_|) = parseSingleO
-    let (|Double|_|) = parseDoubleO
+    let (|DateO|_|)   = parseDateO
+    let (|IntO|_|)    = parseIntO
+    let (|SingleO|_|) = parseSingleO
+    let (|DoubleO|_|) = parseDoubleO
+
+    let (|IntX|) = System.Int32.Parse
 
 module List =
   /// shadow built in functions to get signatures correct
@@ -185,4 +188,3 @@ module LeftPipe =
 
     let ( **<| ) = (<|)
     let ( ^<| ) = (<|)
-

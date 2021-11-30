@@ -23,7 +23,7 @@ module Day4 =
       requiredFields |> List.fold (fun acc fieldName -> acc && isFieldInPassport fieldName) true
 
   module Part2 =
-    open TryParser
+    open Parsing
     open Part1
 
     let intIsInRangeInclusiveO min max i = if i >= min && i <= max then Some i else None

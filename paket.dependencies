@@ -6,7 +6,7 @@ group Main
   storage: none
   framework: net5.0
 
-
   nuget FsToolkit.ErrorHandling
   nuget FParsec
   nuget FsRegEx
+  nuget FSharp.Core 5.0.2
