@@ -3,7 +3,9 @@ namespace AdventOfCode.Y2021
 open Helpers
 
 module Day01 =
-  let getInput () = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2021/input01.txt") |> Seq.map int64
+  let getInput () =
+    System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2021/input01.txt")
+    |> Seq.map int64
 
   module Part1 =
     let go () =

@@ -7,8 +7,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="day01.fs" />
+    <Compile Include="day02.fs" />
     <Compile Include="Program.fs" />
     <Content Include="input01.txt" />
+    <Content Include="input02.txt" />
     <Content Include="paket.references" />
   </ItemGroup>
   <ItemGroup>
