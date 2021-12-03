@@ -4,7 +4,7 @@ open Helpers
 
 module Day04 =
   let getInput () =
-    System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2021/input03.txt")
+    System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2021/input04.txt")
     |> id
     |> pso "Parsed input: "
   module Part1 =

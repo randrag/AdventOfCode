@@ -8,14 +8,10 @@ module Day03 =
 
   let getInput () =
     System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2021/input03.txt")
-    |> Seq.map Seq.toList
-    |> Seq.toList
-    |> List.map (List.map (fun c -> if c = '1' then 1 else 0))
+    |> Seq.map (Seq.map (fun c -> if c = '1' then 1 else 0))
 
   let toDecimal bitsArray =
-
-    let toDecimalFolder (total, multiplier) bitValue =
-          (total + bitValue * multiplier, multiplier * 2)
+    let toDecimalFolder (total, multiplier) bitValue = (total + bitValue * multiplier, multiplier * 2)
     bitsArray |> Seq.rev |> Seq.fold toDecimalFolder (0,1) |> fst
 
   module Part1 =
@@ -28,25 +24,10 @@ module Day03 =
 
     // Count the ones and zeroes in each column
     let getGammaEpsilon ssi =
-
-      let counts =
-        ssi
-        |> List.transpose
-        |> List.map countOnesZeroesInColumn
-
-      let gamma =
-        counts
-        |> List.map (fun (a,b) -> if b > a then 1 else 0)
-        |> toDecimal
-
-      let epsilon =
-        counts
-        |> List.map (fun (a,b) -> if a > b then 1 else 0)
-        |> toDecimal
-        |> pso "epsilon: "
-
+      let counts = ssi |> Seq.transpose |> Seq.map countOnesZeroesInColumn
+      let gamma =  counts |> Seq.map (fun (a,b) -> if b > a then 1 else 0) |> toDecimal
+      let epsilon = counts |> Seq.map (fun (a,b) -> if a > b then 1 else 0) |> toDecimal
       (gamma, epsilon)
-
 
     let go () =
       let gamma, epsilon = getInput () |> getGammaEpsilon
