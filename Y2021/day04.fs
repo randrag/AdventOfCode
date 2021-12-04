@@ -51,14 +51,14 @@ module Day04 =
     let go () =
       let numbers, boards = getInput () |> parse
 
-      let rec findWinningBoard2 boards numbers =
+      let rec findWinningBoard boards numbers =
         let numberToMark = List.head numbers
         let newBoards = boards |> markNumberInBoards numberToMark
         match newBoards |> List.tryFind isWinningBoard with
         | Some winningBoard -> winningBoard, numberToMark
-        | None -> findWinningBoard2 newBoards (List.tail numbers)
+        | None -> findWinningBoard newBoards (List.tail numbers)
 
-      let winningBoard, winningNumber = findWinningBoard2 boards numbers
+      let winningBoard, winningNumber = findWinningBoard boards numbers
       let sum = winningBoard |> sumUnmarkedSquares
       sum * winningNumber
 
@@ -71,12 +71,12 @@ module Day04 =
          let newBoards = markNumberInBoards numberToMark remainingBoards
          let newRemainingBoards = newBoards |> List.filter (fun board -> isWinningBoard board = false)
          let remainingBoardCount = List.length newRemainingBoards
-         if remainingBoardCount = 0 then newBoards |> List.head, numberToMark
+         if remainingBoardCount = 0 then newBoards |> List.find isWinningBoard, numberToMark
          else findLastWinningBoard newRemainingBoards (List.tail remainingNumbers)
 
       let lastWinningBoard, lastNumber = findLastWinningBoard boards numbers
-      let sum2 = sumUnmarkedSquares lastWinningBoard
-      sum2 * lastNumber
+      let sum = sumUnmarkedSquares lastWinningBoard
+      sum * lastNumber
 
   let run () =
     Part1.go () |> ps "Part 1: "
