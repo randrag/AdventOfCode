@@ -13,12 +13,8 @@ module Day05 =
             s.Split ","
             |> Array.toList
             |> List.map int32
-            |> function
-                | [x;y] -> x,y
-                | _ -> failwith "bang1" )
-        |> function
-                | [startPoint;endPoint] -> startPoint,endPoint
-                | _ -> failwith "bang2" )
+            |> function | [x;y] -> x, y  | _ -> failwith "bang1" )
+        |> function | [startPoint;endPoint] -> startPoint, endPoint | _ -> failwith "bang2" )
 
   let countCoveredPoint pointMap (x,y) =
     let currentCount = pointMap |> Map.tryFind (x,y) |> Option.defaultValue 0
