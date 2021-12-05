@@ -20,6 +20,10 @@ module Day05 =
                 | [a;b] -> a,b
                 | _ -> failwith "bang2" )
 
+  let countCoveredPoint pointMap (x,y) =
+    let currentCount = pointMap |> Map.tryFind (x,y) |> Option.defaultValue 0
+    pointMap |> Map.add (x,y) (currentCount + 1)
+
   module Part1 =
     let findCoveredPoints ((x1, y1), (x2, y2)) =
       if x1 = x2 then
@@ -34,17 +38,8 @@ module Day05 =
       getInput ()
       |> List.filter (fun ((x1, y1), (x2, y2)) -> x1 = x2 || y1 = y2)
       |> List.collect findCoveredPoints
-      |> List.fold
-          (fun m (x,y) ->
-            let currentCount =
-              m
-              |> Map.tryFind (x,y)
-              |> Option.defaultValue 0
-            m |> Map.add (x,y) (currentCount + 1))
-          Map.empty
-      |> Map.fold'
-          (fun total count -> if count >= 2 then total + 1 else total)
-          0
+      |> List.fold countCoveredPoint Map.empty
+      |> Map.fold' (fun total count -> if count >= 2 then total + 1 else total) 0
 
 
   module Part2 =
@@ -63,17 +58,8 @@ module Day05 =
     let go () =
       getInput ()
       |> List.collect findCoveredPoints
-      |> List.fold
-          (fun myMap (x,y) ->
-            let currentCount =
-              myMap
-              |> Map.tryFind (x,y)
-              |> Option.defaultValue 0
-            myMap |> Map.add (x,y) (currentCount + 1))
-          Map.empty
-      |> Map.fold'
-          (fun total count -> if count >= 2 then total + 1 else total)
-          0
+      |> List.fold countCoveredPoint Map.empty
+      |> Map.fold' (fun total count -> if count >= 2 then total + 1 else total) 0
 
   let run () =
     Part1.go () |> ps "Part 1: "
