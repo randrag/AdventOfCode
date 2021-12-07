@@ -5,11 +5,15 @@ open Helpers
 module Day06 =
   let getInput () =
     System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2021/input06.txt")
-    |> Seq.head |> fun s -> s.Split(',') |> Array.toList |> List.map int64 |> List.map (fun age -> (age, 1L))
+    |> Seq.head |> fun s -> s.Split(',') |> Array.toList
+    |> List.map (fun ageString -> (int ageString, 1L)) // convert to int and add count of 1
 
-  let ageAndSpawn (age, count) = if age > 0L then [(age-1L, count)] else [(6L, count); (8L, count)]
+  let ageAndSpawn (age, count) =
+    if age > 0 then [(age-1, count)]
+    else [(6, count); (8, count)]
 
-  let rec ageNDays n ( l : List<int64 * int64> ) = // takes a list of (age, count)
+  // tuple is (age, count)
+  let rec ageNDays n ( l : List<int * int64> ) =
     if n = 0 then l
     else
       l
