@@ -181,9 +181,7 @@ module Day08 =
               x
         ))
       |> pso "numbers: "
-      |> List.map(function | [a; b; c; d] -> a*1000 + b * 100 + c * 10 + d)
-      |> List.sum
-
+      |> List.sumBy (function | [a; b; c; d]  -> a * 1000 + b * 100 + c * 10 + d | _ -> failwith "bang4")
 
   let run () =
     Part1.go () |> ps "Part 1: "

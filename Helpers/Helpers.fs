@@ -309,6 +309,19 @@ module List =
 
   let concat2 l1 l2 = List.concat [l1; l2]
 
+  /// Returns a list of lists with the element e inserted in every possible position in list l
+  /// [1; 2; 3] |> distribute 4 = [[4; 1; 2; 3]; [1; 4; 2; 3]; [1; 2; 4; 3]; [1; 2; 3; 4]]
+  let rec distributeElement e l : List<List<'a>> =
+    match l with
+    | [] -> [[e]]
+    | x::xs' as xs -> (e::xs)::[for xs in distributeElement e xs' -> x::xs]
+
+  /// Returns a list of all possible permutations of the input list
+  /// List will contain n! lists, where n is the number of elements in the input list
+  let rec allPermutations l : List<List<'a>> =
+    match l with
+    | [] -> [[]]
+    | e::xs -> List.collect (distributeElement e) (allPermutations xs)
 
 
 module NonEmptyList =
