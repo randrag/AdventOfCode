@@ -72,6 +72,7 @@ module Day08 =
       l |> List.filter (fun (set, identification) -> identification = Known n) |> List.head |> fst
 
     let go () =
+
       let input = getInput ()
 
       let firstId (litSegments : Set<char>) =
@@ -186,4 +187,8 @@ module Day08 =
 
   let run () =
     Part1.go () |> ps "Part 1: "
+
     Part2.go () |> ps "Part 2: "
+
+    // I think it would have been better to get all the permutations and to have tested them
+    // 8! is only 40,000 or so.
