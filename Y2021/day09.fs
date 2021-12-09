@@ -28,8 +28,7 @@ module Day09 =
           let lowestSurrounding = getNeighbours (x, y) inputMap |> List.min
           if height < lowestSurrounding then (true, height) else (false, height)
         )
-      |> Map.fold' (fun totalRisk (isLowPoint, height) ->
-          if isLowPoint then totalRisk + 1 + height else totalRisk) 0
+      |> Map.fold' (fun totalRisk (isLowPoint, height) -> if isLowPoint then totalRisk + 1 + height else totalRisk) 0
       |> pso "TotalRisk: "
 
   module Part2 =
@@ -48,14 +47,11 @@ module Day09 =
               (fun (x,y) (lpnO, height) ->
                  let neighbours = getNeighbours (x,y) m
                  let neighbouringBasins = neighbours |> List.map fst |> List.filter Option.isSome
-
                  if lpnO = None && height <> 9 && List.length neighbouringBasins > 0 then
                    let neighbouringLowPoint = List.head neighbouringBasins
                    (neighbouringLowPoint, height)
                  else (lpnO, height))
-
-        if newMap = m then m
-        else floodFill newMap
+        if newMap = m then m  else floodFill newMap
 
       inputMap
       |> Map.map (fun (x, y) height -> // find the low points
@@ -67,17 +63,13 @@ module Day09 =
                 let n = lowPointNumber + 1
                 let m = newMap |> Map.add (x,y) (Some n, height)
                 (n, m)
-              else
-                (lowPointNumber, newMap |> Map.add (x,y) (None, height)))
+              else (lowPointNumber, newMap |> Map.add (x,y) (None, height)))
            (0, Map.empty)
       |> snd
       |> floodFill // expand the basins
       |> Map.toList
       |> List.groupBy (fun ((x,y),(basin,height) ) -> basin)
-      |> List.choose (fun (basinO, l) ->
-          match basinO with
-          | Some n -> Some (List.length l)
-          | None -> None)
+      |> List.choose (fun (basinO, l) -> basinO |> Option.map (fun _ -> List.length l))
       |> List.sortDescending
       |> List.take 3
       |> List.reduce (*)
