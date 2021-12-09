@@ -21,6 +21,7 @@
     <Content Include="input01.txt" />
     <Content Include="input02.txt" />
     <Content Include="input03.txt" />
+    <Content Include="input03_sample.txt" />
     <Content Include="input04.txt" />
     <Content Include="input04_sample.txt" />
     <Content Include="input05.txt" />
@@ -34,7 +35,6 @@
     <Content Include="input09.txt" />
     <Content Include="input09_sample.txt" />
     <Content Include="paket.references" />
-    <Content Include="input03sample.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Helpers\Helpers.fsproj" />
