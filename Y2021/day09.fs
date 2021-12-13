@@ -4,7 +4,7 @@ open Helpers
 
 module Day09 =
   let getInput () =
-    System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2021/input09.txt")
+   System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2021/input09.txt")
     |> Seq.mapi (fun y s -> (y, s))
     |> Seq.collect (fun (y, s) ->
         s
