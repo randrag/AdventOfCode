@@ -65,7 +65,7 @@ module Day13 =
         let maxY = dots |> Set.map snd |> Set.maxElement
         for y in [0..maxY] do
           for x in [0..maxX] do
-            if Set.contains (x,y) dots then printf "#" else printf "."
+            if Set.contains (x,y) dots then printf "#" else printf " "
           printfn ""
 
       printDots final
