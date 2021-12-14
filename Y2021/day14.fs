@@ -25,7 +25,7 @@ module Day14 =
 
     (template |> Seq.map id |> Seq.toList, rules)
 
-  module Part1 =
+  module Part1 = // Original slow implementation
 
     let insert pair (pairToMatch, letterToInsert) =
       if pair = pairToMatch then Some [fst pair; letterToInsert; snd pair] else None
@@ -73,60 +73,55 @@ module Day14 =
       |> List.map (fun (c, l) -> (c, List.length l))
       |> List.sortBy snd
 
-  module Part2 =
+  module Part2 = // New implementation using map
+
+    let addPairToMap m (pair : char * char, countToAdd : int64) =
+      let currentCount = Map.tryFind pair m |> Option.defaultValue 0L
+      Map.add pair (currentCount + countToAdd) m
+
+    let getRuleResult rule =
+      let c1, c2 = rule |> fst
+      let c3 = rule |> snd
+      [(c1, c3), 1L; (c3, c2), 1L; (c1, c2), -1L]
+
+    let getAdjustmentsForRule m rule =
+      let currentCount = Map.tryFind (fst rule) m |> Option.defaultValue 0L
+      rule
+      |> getRuleResult
+      |> List.map (fun (a,n) -> a, n * currentCount)
+
+    let getAdjustmentsForRules m rules =
+      rules
+      |> List.collect (getAdjustmentsForRule m)
+      |> List.groupByAndMap fst snd
+      |> List.map (fun (a,b) -> a, List.sum b)
+
+    let step m rules =
+      getAdjustmentsForRules m rules |> List.fold addPairToMap m
+
+    let rec stepN remainingCount m rules =
+      if remainingCount > 0 then stepN (remainingCount - 1) (step m rules) rules
+      else m
 
     let go () =
-      let start, rules =  getInput ()
-
-      let addPairToMap m (pair : char * char, countToAdd : int64) =
-        let currentCount = Map.tryFind pair m |> Option.defaultValue 0L
-        Map.add pair (currentCount + countToAdd) m
+      let startingPolymer, rules =  getInput ()
 
       let startingPairMap =
-        start
+        startingPolymer
         |> Seq.pairwise
         |> Seq.map (fun tuple -> tuple, 1L)
         |> Seq.fold addPairToMap Map.empty
 
-      let getRuleResult rule =
-        let c1, c2 = rule |> fst
-        let c3 = rule |> snd
-        [(c1, c3), 1L; (c3, c2), 1L; (c1, c2), -1L]
-
-      let getAdjustmentsForRule m rule =
-        let currentCount = Map.tryFind (fst rule) m |> Option.defaultValue 0L
-        rule
-        |> getRuleResult
-        |> List.map (fun (a,n) -> a, n * currentCount)
-
-      let getAdjustmentsForRules m rules =
-        rules
-        |> List.collect (getAdjustmentsForRule m)
-        |> List.groupByAndMap fst snd
-        |> List.map (fun (a,b) -> a, List.sum b)
-
-      let step m rules =
-        getAdjustmentsForRules m rules
-        |> List.fold addPairToMap m
-
-      let rec stepN remainingCount m rules =
-        if remainingCount > 0 then stepN (remainingCount - 1) (step m rules) rules
-        else m
-
       stepN 40 startingPairMap rules
       |> Map.toList
       |> List.collect (fun ((c1, c2), count) -> [(c1, count);(c2, count)])
-      |> fun l -> // we are now double counting, except missing the start and end characters once
-          let p1 = (start |> List.head, 1L)
-          let p2 = (start |> List.last, 1L)
-          List.concat2 [p1; p2] l
+         // we are now double counting, except missing the start and end characters once
+      |> List.concat2 [(List.head startingPolymer, 1L); (List.last startingPolymer, 1L)]
       |> List.groupByAndMap fst snd
       |> List.map (fun (a,b) -> a, (List.sum b) / 2L) // could drop the letter here, leave for debugging
       |> List.sortBy snd
-      |> fun l ->
-           let n1 = l |> List.head |> snd
-           let n2 = l |> List.last |> snd
-           n2 - n1
+      |> List.map snd
+      |> fun l -> (List.last l) - (List.head l)
 
   let run () =
     Part1.go () |> ps "Part 1: "
