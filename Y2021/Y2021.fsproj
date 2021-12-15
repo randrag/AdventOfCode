@@ -20,8 +20,9 @@
     <Compile Include="day11.fs" />
     <Compile Include="day12.fs" />
     <Compile Include="day13.fs" />
-    <Compile Include="dayxx.fs" />
     <Compile Include="day14.fs" />
+    <Compile Include="day15.fs" />
+    <Compile Include="dayxx.fs" />
     <Compile Include="Program.fs" />
     <Content Include="input01.txt" />
     <Content Include="input02.txt" />
@@ -47,11 +48,14 @@
     <Content Include="input12_sample.txt" />
     <Content Include="input13.txt" />
     <Content Include="input13_sample.txt" />
-    <Content Include="inputXX.txt" />
     <Content Include="input14.txt" />
+    <Content Include="inputXX.txt" />
+    <Content Include="input15.txt" />
     <Content Include="inputXX_sample.txt" />
+    <Content Include="input15_sample.txt" />
     <Content Include="input14_sample.txt" />
     <Content Include="scratch14.txt" />
+    <Content Include="scratch15.txt" />
     <Content Include="paket.references" />
   </ItemGroup>
   <ItemGroup>
