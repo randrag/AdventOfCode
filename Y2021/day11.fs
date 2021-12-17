@@ -6,9 +6,7 @@ module Day11 =
   let getInput () =
    System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2021/input11.txt")
     |> Seq.mapi (fun y s -> (y, s))
-    |> Seq.collect (fun (y, s) ->
-        s
-        |> Seq.mapi (fun x c -> (x,y), c |> string |> int) )
+    |> Seq.collect (fun (y, s) -> s |> Seq.mapi (fun x c -> (x,y), c |> string |> int) )
     |> Map.ofSeq
 
   type Status =
@@ -23,7 +21,7 @@ module Day11 =
         let value = Map.find (x,y) m
         let c =
           match value with
-          | UnFlashed (flashcount, value) -> value |> string |> Seq.head
+          | UnFlashed (_, value) -> value |> string |> Seq.head
           | Flashed _ -> 'F'
           | MustFlash _ -> 'M'
         printf $"{c}"
@@ -45,43 +43,35 @@ module Day11 =
     | MustFlash c -> MustFlash c
     | Flashed c -> Flashed c
 
-  let flashCell pos m = // outputs a new map
+  let flashCellAffectingNeighbours pos m = // outputs a new map
     let cellValue = Map.find pos m
     match cellValue with
     | MustFlash flashCount ->
-      let neighbours = getNeighbours pos m
-      let incrementedNeighbours = neighbours |> List.map (fun (pos, v) -> (pos, incrementCell v))
-      incrementedNeighbours
-      |> List.fold (fun m (pos, status) -> Map.change pos (fun _ -> Some status) m) m
-      |> Map.change pos (fun _ -> Some (Flashed (flashCount + 1)))
-
+        let neighbours = getNeighbours pos m
+        let incrementedNeighbours = neighbours |> List.map (fun (pos, v) -> (pos, incrementCell v))
+        incrementedNeighbours
+        |> List.fold (fun m (pos, status) -> Map.change pos (fun _ -> Some status) m) m
+        |> Map.change pos (fun _ -> Some (Flashed (flashCount + 1)))
     | _ -> failwith "Cell should not be flashed"
 
   let rec flashMap m =
     m
     |> Map.tryPick (fun position value -> match value with | MustFlash _ -> Some position | _ -> None)
     |> function
-        | Some positionToFlash ->
-            m
-            |> flashCell positionToFlash
-            |> flashMap
+        | Some positionToFlash -> m |> flashCellAffectingNeighbours positionToFlash |> flashMap
         | None -> m
 
   // Reset map after everything that must flash has flashed
   let resetMap m =
     m
-    |> Map.map' (fun cellValue ->
-         match cellValue with
-         | UnFlashed (_, n) -> cellValue
+    |> Map.map' (function
+         | UnFlashed _ as value -> value
          | Flashed flashCount -> UnFlashed (flashCount, 0)
-         | MustFlash flashCount -> failwith "bug"
+         | MustFlash _ -> failwith "bug"
          )
 
   let step m =
-    m
-    |> Map.map' incrementCell
-    |> flashMap
-    |> resetMap
+    m |> Map.map' incrementCell |> flashMap |> resetMap
 
   let rec stepN n m =
     if n = 0 then m else stepN (n - 1) (step m)
@@ -94,19 +84,15 @@ module Day11 =
         | UnFlashed (flashCount, _) -> flashCount
         | _ -> failwith "bug" )
 
-
   module Part1 =
     let go () =
       getInput ()
       |> addInitialStatus
-      |> printMapAndOutput "Initial"
       |> stepN 100
-      |> printMapAndOutput "Stepped"
       |> getTotalFlashes
 
   module Part2 =
     let rec stepUntilAllFlash n m =
-      ps "Entering stepUntilAllFlash with n = " n
       let size = Map.count m
       let flashCountBefore = getTotalFlashes m
       let m = step m
