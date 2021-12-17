@@ -4,84 +4,119 @@ open Helpers
 
 module Day11 =
   let getInput () =
-   System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2021/input11_sample.txt")
+   System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2021/input11.txt")
     |> Seq.mapi (fun y s -> (y, s))
     |> Seq.collect (fun (y, s) ->
         s
         |> Seq.mapi (fun x c -> (x,y), c |> string |> int) )
     |> Map.ofSeq
-    |> pso "Parsed input: "
 
-  let getNeighbours (x, y) m =
-      let nO  = ((x  , y-1) , Map.tryFind (x  , y-1) m)
-      let nwO = ((x-1, y-1) , Map.tryFind (x-1, y-1) m)
-      let wO  = ((x-1, y  ) , Map.tryFind (x-1, y  ) m)
-      let swO = ((x-1, y+1) , Map.tryFind (x-1, y+1) m)
-      let sO  = ((x  , y+1) , Map.tryFind (x  , y+1) m)
-      let seO = ((x+1, y+1) , Map.tryFind (x+1, y+1) m)
-      let eO  = ((x+1, y  ) , Map.tryFind (x+1, y  ) m)
-      let neO = ((x+1, y-1) , Map.tryFind (x+1, y-1) m)
-      [nO; nwO; wO; swO; sO; seO; eO; neO]
-      |> List.map (fun (coord, vO) -> vO |> Option.map (fun v -> coord, v))
-      |> List.choose id
+  type Status =
+    | UnFlashed of FlashCount : int * Value : int
+    | MustFlash of FlashCount : int
+    | Flashed   of FlashCount : int
 
-  let printMapAndOutput m =
+  let printMapAndOutput s m =
+    printfn $"{s}: \n"
     for y in [0..9] do
       for x in [0..9] do
-        printf "%i" ((Map.find (x,y) m) |> snd)
+        let value = Map.find (x,y) m
+        let c =
+          match value with
+          | UnFlashed (flashcount, value) -> value |> string |> Seq.head
+          | Flashed _ -> 'F'
+          | MustFlash _ -> 'M'
+        printf $"{c}"
       printfn ""
     printfn ""
     m
 
-  let printMapNeighboursAndOutput (neighbours, m) =
-    printfn "Map: "
-    printMapAndOutput m |> ignore
-    ps "Neighbours: " neighbours
-    (neighbours, m)
+  let getNeighbours (x, y) m =
+      [ (x-1, y-1); (x, y-1); (x+1, y-1);  (x-1, y); (x+1, y); (x-1, y+1); (x, y+1); (x+1, y+1);  ]
+      |> List.map (fun pos -> Map.tryFind pos m |> Option.map (fun v -> pos, v))
+      |> List.choose id
 
-  let incrementCell (x,y) m =
-    let cell = Map.find (x,y) m
-    if cell + 1 = 10 then
-      let neighbours = getNeighbours (x, y) m
-      let newMap = Map.add (x,y) 0 m
-      (neighbours, newMap)
-    else
-      let newMap = Map.add (x,y) (cell + 1) m
-      ([], newMap)
+  let addInitialStatus m = m |> Map.map' (fun value -> UnFlashed (0, value))
 
-  type Status = | NotFlashed | MustFlash | JustFlashed | Flashed
+  let incrementCell value =
+    match value with
+    | UnFlashed (c, 9) -> MustFlash c
+    | UnFlashed (c, n) -> UnFlashed (c, (n + 1))
+    | MustFlash c -> MustFlash c
+    | Flashed c -> Flashed c
 
-  let InitialAddStatus m = m |> Map.map' (fun v -> (NotFlashed, v))
+  let flashCell pos m = // outputs a new map
+    let cellValue = Map.find pos m
+    match cellValue with
+    | MustFlash flashCount ->
+      let neighbours = getNeighbours pos m
+      let incrementedNeighbours = neighbours |> List.map (fun (pos, v) -> (pos, incrementCell v))
+      incrementedNeighbours
+      |> List.fold (fun m (pos, status) -> Map.change pos (fun _ -> Some status) m) m
+      |> Map.change pos (fun _ -> Some (Flashed (flashCount + 1)))
+
+    | _ -> failwith "Cell should not be flashed"
+
+  let rec flashMap m =
+    m
+    |> Map.tryPick (fun position value -> match value with | MustFlash _ -> Some position | _ -> None)
+    |> function
+        | Some positionToFlash ->
+            m
+            |> flashCell positionToFlash
+            |> flashMap
+        | None -> m
+
+  // Reset map after everything that must flash has flashed
+  let resetMap m =
+    m
+    |> Map.map' (fun cellValue ->
+         match cellValue with
+         | UnFlashed (_, n) -> cellValue
+         | Flashed flashCount -> UnFlashed (flashCount, 0)
+         | MustFlash flashCount -> failwith "bug"
+         )
 
   let step m =
     m
-    |> Map.map' (fun (status, energy) ->
-        match status, energy with
-        | NotFlashed, 9 -> MustFlash, 0
-        | JustFlashed, 0 -> Flashed, 0
-        | NotFlashed, i -> NotFlashed, i + 1
-        | _ -> failwith $"Unexpected status and energy {(status, energy)}"
-        )
+    |> Map.map' incrementCell
+    |> flashMap
+    |> resetMap
 
-  let flash m =
+  let rec stepN n m =
+    if n = 0 then m else stepN (n - 1) (step m)
+
+  let getTotalFlashes m =
     m
-    |> Map.fold (fun l (x,y) (status, energy) ->          l ) []
-    |> id
-
+    |> Map.toList
+    |> List.map snd
+    |> List.sumBy (function
+        | UnFlashed (flashCount, _) -> flashCount
+        | _ -> failwith "bug" )
 
 
   module Part1 =
     let go () =
       getInput ()
-      |> InitialAddStatus
-      |> printMapAndOutput
-      |> step
-      |> printMapAndOutput
-
+      |> addInitialStatus
+      |> printMapAndOutput "Initial"
+      |> stepN 100
+      |> printMapAndOutput "Stepped"
+      |> getTotalFlashes
 
   module Part2 =
+    let rec stepUntilAllFlash n m =
+      ps "Entering stepUntilAllFlash with n = " n
+      let size = Map.count m
+      let flashCountBefore = getTotalFlashes m
+      let m = step m
+      let flashCountAfter = getTotalFlashes m
+      if (flashCountAfter - flashCountBefore) = size then (n + 1) else stepUntilAllFlash (n + 1) m
+
     let go () =
-      ()
+      getInput ()
+      |> addInitialStatus
+      |> stepUntilAllFlash 0
 
   let run () =
     Part1.go () |> ps "Part 1: "
