@@ -1,19 +1,17 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
-    </PropertyGroup>
-
-    <ItemGroup>
-      <Compile Include="Day01.fs" />
-      <Compile Include="Program.fs" />
-      <Content Include="paket.references" />
-      <Content Include="input01.txt" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Helpers\Helpers.fsproj" />
-    </ItemGroup>
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Day01.fs" />
+    <Compile Include="Program.fs" />
+    <Content Include="paket.references" />
+    <Content Include="input01.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Helpers\Helpers.fsproj" />
+  </ItemGroup>
+  <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>

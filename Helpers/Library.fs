@@ -23,6 +23,7 @@ module Parsing =
 
     let parseDateO   = tryParseWith System.DateTime.TryParse
     let parseIntO    = tryParseWith System.Int32.TryParse
+    let parseInt64O  = tryParseWith System.Int64.TryParse
     let parseSingleO = tryParseWith System.Single.TryParse
     let parseDoubleO = tryParseWith System.Double.TryParse
     // etc.
@@ -30,10 +31,13 @@ module Parsing =
     // active patterns for try-parsing strings
     let (|DateO|_|)   = parseDateO
     let (|IntO|_|)    = parseIntO
+    let (|Int64O|_|)  = parseInt64O
     let (|SingleO|_|) = parseSingleO
     let (|DoubleO|_|) = parseDoubleO
 
     let (|IntX|) = System.Int32.Parse
+
+
 
 module List =
   /// shadow built in functions to get signatures correct
