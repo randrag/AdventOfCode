@@ -27,7 +27,7 @@ type State = {
 module Day15 =
   let getInput () =
     System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2021/input15.txt")
-    |> Seq.map Seq.toList|> Seq.toList
+    |> Seq.map Seq.toList |> Seq.toList
     |> List.mapi (fun y s -> s |> List.mapi (fun x c -> (x, y), c |> string |> int))
     |> List.concat
     |> List.toMap

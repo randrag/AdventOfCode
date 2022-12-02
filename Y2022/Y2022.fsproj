@@ -6,9 +6,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Day01.fs" />
+    <Compile Include="Day02.fs" />
     <Compile Include="Program.fs" />
     <Content Include="paket.references" />
     <Content Include="input01.txt" />
+    <Content Include="input02.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Helpers\Helpers.fsproj" />
