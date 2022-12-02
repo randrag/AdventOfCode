@@ -11,6 +11,7 @@
     <Content Include="paket.references" />
     <Content Include="input01.txt" />
     <Content Include="input02.txt" />
+    <Content Include="example02.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Helpers\Helpers.fsproj" />
