@@ -15,33 +15,32 @@ module Day03 =
 
    let getInput () =
       System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2022/input03.txt")
-      |> Seq.toList
 
    module Part1 =
 
       let go () =
          getInput ()
-         |> List.collect (fun string ->
+         |> Seq.collect (fun string ->
                string
-               |> Seq.toList
-               |> fun l -> l |> List.splitAt (List.length l / 2)
-               |> fun (l1, l2) -> (Set.intersect (List.toSet l1) (List.toSet l2))
-               |> Set.toList
+               |> Seq.splitInto 2
+               |> Seq.map Seq.toSet
+               |> Seq.reduce Set.intersect
+               |> Set.toSeq
             )
-         |> List.sumBy score
+         |> Seq.sumBy score
 
    module Part2 =
 
       let go () =
          getInput ()
-         |> List.chunkBySize 3
-         |> List.collect (fun l -> // list of three strings
+         |> Seq.chunkBySize 3
+         |> Seq.collect (fun l -> // list of three strings
                l
-               |> List.map Seq.toSet
-               |> List.reduce Set.intersect
+               |> Seq.map Seq.toSet
+               |> Seq.reduce Set.intersect
                |> Set.toList
             )
-         |> List.sumBy score
+         |> Seq.sumBy score
 
    let run () =
       Part1.go () |> p
