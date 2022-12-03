@@ -13,22 +13,22 @@ module Day02 =
    | 'C' -> Scissors
    | _ -> Unreachable ()
 
-   type Outcome = | Win | Loose | Tie
+   type Outcome = | Win | Lose | Tie
 
-   let winLoose a b =
+   let winLose a b =
       match a, b with
       | Rock, Rock -> Tie
-      | Rock, Paper -> Loose
+      | Rock, Paper -> Lose
       | Rock, Scissors -> Win
       | Paper, Rock -> Win
       | Paper, Paper -> Tie
-      | Paper, Scissors -> Loose
-      | Scissors, Rock -> Loose
+      | Paper, Scissors -> Lose
+      | Scissors, Rock -> Lose
       | Scissors, Paper -> Win
       | Scissors, Scissors -> Tie
 
    let Score a b =
-      let outcome = winLoose b a
+      let outcome = winLose b a
       let x =
          match b with
          | Rock -> 1
@@ -39,13 +39,14 @@ module Day02 =
          match outcome with
          | Win -> 6
          | Tie -> 3
-         | Loose -> 0
+         | Lose -> 0
 
       x + y
-      |> po
 
    let getInput () =
       System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2022/input02.txt")
+      |> Seq.toList
+
 
    module Part1 =
 
@@ -57,21 +58,17 @@ module Day02 =
 
       let go () =
          getInput ()
-         |> Seq.map (fun (s : string) ->
+         |> List.map (fun (s : string) ->
                let a = s[0] |> ABC
                let b = s[2] |> XYZ
                (a,b)
-
             )
-         |> Seq.toList
-         |> po
          |> List.map (fun (a,b) -> Score a b)
          |> List.sum
-         |> p
 
 
    module Part2 =
-      let XYZ  opponentChoice xyz =
+      let XYZ opponentChoice xyz =
          match xyz with
          | 'X' -> // need to loose
             match opponentChoice with
@@ -90,22 +87,15 @@ module Day02 =
             | Scissors  -> Rock
          | _ -> Unreachable ()
 
-
-
-
       let go () =
          getInput ()
-         |> Seq.toList
          |> List.map (fun (s : string) ->
             let opponentChoice = s[0] |> ABC
             let myChoice = s[2] |> XYZ opponentChoice
             Score opponentChoice myChoice
             )
          |> List.sum
-         |> p
-
-
 
    let run () =
-      Part1.go ()
-      Part2.go ()
+      Part1.go () |> p
+      Part2.go () |> p
