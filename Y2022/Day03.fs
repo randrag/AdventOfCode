@@ -18,19 +18,14 @@ module Day03 =
       |> Seq.toList
 
    module Part1 =
-      let splitList (l : List<_>) =
-        let length = List.length l
-        let h1 = l |> List.take (length/2)
-        let h2 = l |> List.skip (length/2)
-        h1, h2
-
       let go () =
          getInput ()
          |> List.collect (fun string ->
                string
                |> Seq.toList
-               |> splitList
-               |> fun (a, b) -> (Set.intersect (a |> List.toSet) (b |> List.toSet) |> Set.toList)
+               |> fun l -> l |> List.splitAt (List.length l / 2)
+               |> fun (l1, l2) -> (Set.intersect (List.toSet l1) (List.toSet l2))
+               |> Set.toList
             )
          |> List.sumBy score
 
