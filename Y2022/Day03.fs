@@ -37,22 +37,10 @@ module Day03 =
 
    module Part2 =
 
-      let divideList (l1 : List<_>) =
-
-         let rec inner (l1 : List<_>) (acc : List<List<_>>) =
-            match l1 with
-            | [] -> acc |> List.rev |> List.tail  // first element is an empty list
-            | nonEmptyList ->
-               inner
-                  (nonEmptyList |> List.skip 3)
-                  ((nonEmptyList |> List.take 3)::acc)
-
-         if List.isEmpty l1 then [[]] else inner l1 [[]]
-
       let go () =
          getInput ()
          // divide into groups of three
-         |> divideList
+         |> List.chunkBySize 3
          |> List.map (fun l -> // list of three strings
                   l
                   |> List.map Seq.toSet
