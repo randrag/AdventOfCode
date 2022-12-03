@@ -18,6 +18,7 @@ module Day03 =
       |> Seq.toList
 
    module Part1 =
+
       let go () =
          getInput ()
          |> List.collect (fun string ->
@@ -35,11 +36,11 @@ module Day03 =
          getInput ()
          |> List.chunkBySize 3
          |> List.collect (fun l -> // list of three strings
-                  l
-                  |> List.map Seq.toSet
-                  |> List.reduce Set.intersect
-                  |> Set.toList
-               )
+               l
+               |> List.map Seq.toSet
+               |> List.reduce Set.intersect
+               |> Set.toList
+            )
          |> List.sumBy score
 
    let run () =
