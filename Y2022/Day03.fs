@@ -26,27 +26,26 @@ module Day03 =
 
       let go () =
          getInput ()
-         |> List.map (fun string ->
+         |> List.collect (fun string ->
                string
                |> Seq.toList
                |> splitList
-               |> fun (a, b) -> (
-                     Set.intersect (a |> List.toSet) (b |> List.toSet)))
-         |> List.collect (Set.map score >> Set.toList)
-         |> List.sum
+               |> fun (a, b) -> (Set.intersect (a |> List.toSet) (b |> List.toSet) |> Set.toList)
+            )
+         |> List.sumBy score
 
    module Part2 =
 
       let go () =
          getInput ()
-         // divide into groups of three
          |> List.chunkBySize 3
-         |> List.map (fun l -> // list of three strings
+         |> List.collect (fun l -> // list of three strings
                   l
                   |> List.map Seq.toSet
                   |> List.reduce Set.intersect
+                  |> Set.toList
                )
-         |> List.sumBy (fun s -> s |> Set.toList |> List.sumBy score)
+         |> List.sumBy score
 
    let run () =
       Part1.go () |> p
