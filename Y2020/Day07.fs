@@ -1,5 +1,7 @@
 namespace AdventOfCode
 
+open Helpers
+
 module Day7 =
 
   type BagColour = string

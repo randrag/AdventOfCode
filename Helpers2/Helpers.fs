@@ -2,68 +2,24 @@ namespace Helpers
 
 
 [<AutoOpen>]
-module OutputToConsole =
-    open System
-
-    let p = printfn
-    let ps s x = printfn "%s%A" s x
-    let pso s x = ps s x; x
-    let pnl () =  printfn ""
-
-    let r = Console.ReadKey () |> ignore
-    let ro x = Console.ReadKey () |> ignore; x
-
-
-// from fssnip.net
-[<AutoOpen>]
-module Parsing =
-    // convenient, functional TryParse wrappers returning option<'a>
-    let private tryParseWith (tryParseFunc: string -> bool * _) x =
-        printfn $"Trying to parse {x}"
-        match tryParseFunc x with
-        | true, v    -> Some v
-        | false, _   -> None
-
-    let parseDateO   = tryParseWith System.DateTime.TryParse
-    let parseIntO    = tryParseWith System.Int32.TryParse
-    let parseInt64O  = tryParseWith System.Int64.TryParse
-    let parseSingleO = tryParseWith System.Single.TryParse
-    let parseDoubleO = tryParseWith System.Double.TryParse
-    // etc.
-
-    // active patterns for try-parsing strings
-    let (|DateO|_|)   = parseDateO
-    let (|IntO|_|)    = parseIntO
-    let (|Int64O|_|)  = parseInt64O
-    let (|SingleO|_|) = parseSingleO
-    let (|DoubleO|_|) = parseDoubleO
-
-    let (|IntX|) = System.Int32.Parse
-
-
-[<AutoOpen>]
 module Helpers =
-  let print a = printf $"%A{a}"
-  let printn a = printfn $"%A{a}"
-  let po a = printfn $"%A{a}"; a
-  let ps s a = printfn $"%s{s}%A{a}"
-  let pso s a = printfn $"%s{s}%A{a}"; a
-  let plo s a = printf $"%s{s}%A{a}"; a
-  let flip f a b = f b a
 
-  /// Apply a function to a value, the value being on the left, the function on the right, while mapping the function with Option.map
-  let (|!>) a f = Option.map f a
+   let print a = printf $"%A{a}"
+   let printn a = printfn $"%A{a}"
+   let p = print
+   let pn = printn
+   let po a = printfn $"%A{a}"; a
+   let ps s a = printfn $"%s{s}%A{a}"
+   let pso s a = printfn $"%s{s}%A{a}"; a
+   let plo s a = printf $"%s{s}%A{a}"; a
+   let flip f a b = f b a
 
-  /// Apply a function to a value, the value being on the left, the function on the right, while mapping the function with Result.map
-  let (|!!>) a f = Result.map f a
+   let r = System.Console.ReadKey () |> ignore
+   let ro x = System.Console.ReadKey () |> ignore; x
 
-  /// Compose two functions, the function on the left being applied first, the function on the right being mapped with Option.map
-  let (>!>) f1 f2 = f1 >> Option.map f2
-
-  /// Compose two functions, the function on the left being applied first, the function on the right being mapped with Result.map
-  let (>!!>) f1 f2 = f1 >> Result.map f2
-
-  let generateCurrentDateTimeOffsetA () = async { return System.DateTimeOffset.Now }
+   type UndefinedType = exn // Place holder when modelling types
+   let Unreachable () = failwith "Unexpected execution of code regarded as unreachable"
+   let NotImplemented () = failwith "Behaviour not implemented" // Place holder when modelling behaviour
 
 
   // functional wrappers around some .net types
@@ -89,9 +45,6 @@ module Helpers =
     let fromStringX (s : string) = System.Guid.Parse (s.ToLower())
     let toFingerPrintString = toString >> (fun x -> x.Substring(0,8))
 
-  type UndefinedType = exn // Place holder when modelling types
-  let Unreachable () = failwith "Unexpected execution of code regarded as unreachable"
-  let NotImplemented () = failwith "Behaviour not implemented" // Place holder when modelling behaviour
 
   module Curried2 =
     let inline fst a _ = a
@@ -456,15 +409,6 @@ module List =
           inner (front::acc) remaining
 
     inner [[]] l
-(*
-      []           |> List.splitWhere ((=) 1) = ([] ,          []          ) |> ps "Test splitWhere: "
-      [1]          |> List.splitWhere ((=) 2) = ([1],          []          ) |> ps "Test splitwhere: "
-      [2]          |> List.splitWhere ((=) 2) = ([] ,          [2]         ) |> ps "Test splitwhere: "
-      [1; 2]       |> List.splitWhere ((=) 2) = ([1],          [2]         ) |> ps "Test splitwhere: "
-      [1; 2; 2; 3] |> List.splitWhere ((=) 2) = ([1],          [2; 2; 3]   ) |> ps "Test splitwhere: "
-      [1; 2; 2; 3] |> List.splitWhere ((=) 4) = ([1; 2; 2; 3], []          ) |> ps "Test splitwhere: "
-      [1; 2; 2; 3] |> List.splitWhere ((=) 1) = ([],           [1; 2; 2; 3]) |> ps "Test splitwhere: "
-*)
 
 
 module NonEmptyList =
@@ -708,6 +652,37 @@ module String =
   let toCharList = List.ofSeq
   let indexOfChar (c : char) (s : string) = s.IndexOf c
   let indexOfString (sub : string) (s : string) = s.IndexOf sub
+
+  // convenient, functional TryParse wrappers returning option<'a>
+  let private tryParseWith (tryParseFunc: string -> bool * _) x =
+      match tryParseFunc x with
+      | true, v    -> Some v
+      | false, _   -> None
+
+  let parseToDateO   s = tryParseWith System.DateTime.TryParse s
+  let parseToIntO    s = tryParseWith System.Int32.TryParse   s
+  let parseToInt64O  s = tryParseWith System.Int64.TryParse   s
+  let parseToSingleO s = tryParseWith System.Single.TryParse  s
+  let parseToDoubleO s = tryParseWith System.Double.TryParse  s
+  // etc.
+  let parseToDateX   s = tryParseWith System.DateTime.TryParse s |> Option.getOrFailWith $"Parsing failed on: {s}"
+  let parseToIntX    s = tryParseWith System.Int32.TryParse    s |> Option.getOrFailWith $"Parsing failed on: {s}"
+  let parseToInt64X  s = tryParseWith System.Int64.TryParse    s |> Option.getOrFailWith $"Parsing failed on: {s}"
+  let parseToSingleX s = tryParseWith System.Single.TryParse   s |> Option.getOrFailWith $"Parsing failed on: {s}"
+  let parseToDoubleX s = tryParseWith System.Double.TryParse   s |> Option.getOrFailWith $"Parsing failed on: {s}"
+
+
+[<AutoOpen>]
+module ParsingActivePatterns =
+     // active patterns for try-parsing strings
+  let (|DateO|_|)   = String.parseToDateO
+  let (|IntO|_|)    = String.parseToIntO
+  let (|Int64O|_|)  = String.parseToInt64O
+  let (|SingleO|_|) = String.parseToSingleO
+  let (|DoubleO|_|) = String.parseToDoubleO
+
+  let (|IntX|) = System.Int32.Parse
+
 
 module Tuple2 =
   let sequenceAsync ((v1A, v2A) : Async<'v1> * Async<'v2>) = async {

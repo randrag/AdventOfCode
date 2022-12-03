@@ -1,5 +1,5 @@
 namespace AdventOfCode
-
+open Helpers
 module Day10 =
 
   let  input () = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Input10.txt") |> List.ofSeq |> List.map int64

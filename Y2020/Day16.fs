@@ -1,5 +1,7 @@
 namespace AdventOfCode
 
+open Helpers
+
 module Day16 =
   let input ()  = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Input16.txt") |> List.ofSeq
 

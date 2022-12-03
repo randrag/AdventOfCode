@@ -90,12 +90,12 @@ module Day02 =
       let go () =
          getInput ()
          |> List.map (fun (s : string) ->
-            let opponentChoice = s[0] |> ABC
-            let myChoice = s[2] |> XYZ opponentChoice
-            Score opponentChoice myChoice
+               let opponentChoice = s[0] |> ABC
+               let myChoice = s[2] |> XYZ opponentChoice
+               Score opponentChoice myChoice
             )
          |> List.sum
 
    let run () =
-      Part1.go () |> p
-      Part2.go () |> p
+      Part1.go () |> print
+      Part2.go () |> print

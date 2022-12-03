@@ -1,5 +1,7 @@
 namespace AdventOfCode
 
+open Helpers
+
 module Day18 =
   open FParsec
 
@@ -61,8 +63,3 @@ module Day18 =
 ///   6   + (4 * 5)
 ///   6   +  20
 ///   26
-
-
-
-
-

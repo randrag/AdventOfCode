@@ -1,6 +1,6 @@
 namespace AdventOfCode.Y2022
 
-open Helpers
+open Helpers.Helpers
 
 
 module Day03 =
@@ -18,7 +18,7 @@ module Day03 =
 
    let findCommonChars (s : seq<_>) =
       s
-      |> Seq.map Seq.toSet
+      |> Seq.map Helpers.Seq.toSet
       |> Seq.reduce Set.intersect
       |> Set.toSeq
 
@@ -38,5 +38,5 @@ module Day03 =
          |> Seq.sumBy score
 
    let run () =
-      Part1.go () |> p
-      Part2.go () |> p
+      Part1.go () |> printn
+      Part2.go () |> printn

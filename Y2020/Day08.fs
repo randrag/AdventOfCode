@@ -1,5 +1,8 @@
 namespace AdventOfCode
+
 open FsToolkit.ErrorHandling
+open Helpers
+
 
 module Day8v2 =
   type Location = int

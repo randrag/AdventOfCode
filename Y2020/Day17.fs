@@ -1,6 +1,8 @@
 namespace AdventOfCode
 open FsToolkit.ErrorHandling
 
+open Helpers
+
 module Day17 =
   module Part1 =
     let read fileName  = System.IO.File.ReadLines($"/Users/roland/Code/AdventOfCode/Y2020/{fileName}.txt")

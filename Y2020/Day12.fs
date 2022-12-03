@@ -1,5 +1,5 @@
 namespace AdventOfCode
-
+open Helpers
 module Day12 =
 
   let  input  = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Input12b.txt")
@@ -66,7 +66,7 @@ module Day12 =
 
       let initialState = { Heading = 90; xPosition = 0; yPosition = 0 }
       let finalState = Seq.fold interpret initialState commands |> pso "Final state part 1: "
-      do finalState |> fun r -> abs (r.xPosition) + abs (r.yPosition) |> ps "Final manhattan position: "
+      do finalState |> fun r -> abs r.xPosition + abs r.yPosition |> ps "Final manhattan position: "
       ()
 
   module Part2 =
@@ -96,7 +96,5 @@ module Day12 =
 
       let initialState = { Heading = 90; xPosition = 0; yPosition = 0 }, { xPosition = 10; yPosition = 1 }
       let finalState = Seq.fold interpret initialState commands |> pso "Part 2 final state: "
-      do finalState |> fun (r, _) -> abs (r.xPosition) + abs (r.yPosition) |> ps "Final manhattan position: "
+      do finalState |> fun (r, _) -> abs r.xPosition + abs r.yPosition |> ps "Final manhattan position: "
       ()
-
-

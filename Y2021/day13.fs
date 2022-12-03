@@ -74,4 +74,4 @@ module Day13 =
     Part1.go () |> ps "Part 1: "
 
     printfn "\nPart2: "
-    Part2.go () |> p
+    Part2.go () |> print

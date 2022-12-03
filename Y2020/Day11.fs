@@ -1,5 +1,5 @@
 namespace AdventOfCode
-
+open Helpers
 module Day11 =
 
   module Common =

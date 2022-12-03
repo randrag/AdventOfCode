@@ -6,7 +6,6 @@ namespace Helpers
 /// Todo:
 ///    Do this properly and completely also importing all the doc strings
 ///    The fsharp core is very stable, so even if we do this by hand it should not be too much work to keep up.
-[<AutoOpen>]
 module NoCaml =
    open FsToolkit.ErrorHandling
 

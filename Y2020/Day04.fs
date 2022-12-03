@@ -1,5 +1,7 @@
 namespace AdventOfCode
 
+open Helpers
+
 module Day4 =
   open Microsoft.FSharp.Collections
   open FsToolkit.ErrorHandling

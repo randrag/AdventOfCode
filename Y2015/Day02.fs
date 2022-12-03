@@ -1,6 +1,6 @@
 namespace AdventOfCode.Y2015
 
-open AdventOfCode.Parsing
+open Helpers
 
 module Day02 =
   let loadLines () = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2015/input02.txt")

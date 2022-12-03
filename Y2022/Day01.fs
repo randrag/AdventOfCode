@@ -1,32 +1,22 @@
 namespace AdventOfCode.Y2022
 
-open AdventOfCode
+//open AdventOfCode
 open Helpers
+open NoCaml
 
 module Day01 =
+
    let getInput () =
-      System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2022/input01.txt")
-      |> Seq.map parseInt64O
-      |> Seq.fold
-            (fun state elem ->
-               match elem with
-               | None -> []::state
-               | Some i64 ->
-                  let state' =
-                     match state with
-                     | [singleton] -> [i64::singleton]
-                     | head::tail -> (i64::head)::tail
-                     | [] -> state
-                  state'
-            )
-            [[]]
+      System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2022/example01.txt")
+      |> Seq.toList
+      |> List.splitMultipleOnExcl (fun s -> s = "")
+      |> List.map (List.map String.parseToInt64X)
 
    module Part1 =
       let go () =
          getInput ()
          |> Seq.map Seq.sum
          |> Seq.max
-         |> p
 
    module Part2 =
       let go () =
@@ -35,8 +25,7 @@ module Day01 =
          |> Seq.sortDescending
          |> Seq.take 3
          |> Seq.sum
-         |> p
-
 
    let run () =
-      Part2.go ()
+      Part1.go () |> printn
+      Part2.go () |> printn

@@ -1,5 +1,7 @@
 namespace AdventOfCode
+
 open FsToolkit.ErrorHandling
+open Helpers
 
 module Day15 =
   let input = [12; 20; 0; 6; 1; 17; 7]

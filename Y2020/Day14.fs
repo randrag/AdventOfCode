@@ -1,5 +1,7 @@
 namespace AdventOfCode
 
+open Helpers
+
 module Day14 =
 
   let  input_a ()  = System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2020/Input14a.txt")

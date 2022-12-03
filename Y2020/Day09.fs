@@ -1,5 +1,5 @@
 namespace AdventOfCode
-
+open Helpers
 module Day9 =
   let ro x = System.Console.ReadKey () |> ignore; x
 
@@ -44,4 +44,3 @@ module Day9 =
     |> Seq.filter (Seq.isEmpty >> not)
     |> Seq.head
     |> ps "Answer: "
-
