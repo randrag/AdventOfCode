@@ -9,15 +9,18 @@
     <Compile Include="Day01.fs" />
     <Compile Include="Day02.fs" />
     <Compile Include="Day03.fs" />
+    <Compile Include="Day04.fs" />
     <Compile Include="DayXX.fs" />
     <Compile Include="Program.fs" />
     <Content Include="paket.references" />
     <Content Include="input01.txt" />
     <Content Include="input02.txt" />
     <Content Include="input03.txt" />
+    <Content Include="input04.txt" />
+    <Content Include="example01.txt" />
     <Content Include="example02.txt" />
     <Content Include="example03.txt" />
-    <Content Include="example01.txt" />
+    <Content Include="example04.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Helpers2\Helpers2.fsproj" />

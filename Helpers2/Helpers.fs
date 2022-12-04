@@ -21,6 +21,15 @@ module Helpers =
    let Unreachable () = failwith "Unexpected execution of code regarded as unreachable"
    let NotImplemented () = failwith "Behaviour not implemented" // Place holder when modelling behaviour
 
+   // Code to read either example or full input as a sequence of strings
+   type RunMode = | Example | Full
+   let getFileName (year, day) (runMode : RunMode)  =
+      match runMode with
+      | Example -> $"/Users/roland/Code/AdventOfCode/Y%04i{year}/example%02i{day}.txt"
+      | Full -> $"/Users/roland/Code/AdventOfCode/Y%04i{year}/input%02i{day}.txt"
+
+   let getInput (year, day) (runMode : RunMode)  =
+      System.IO.File.ReadLines (getFileName (year, day) runMode)
 
   // functional wrappers around some .net types
   module Int32 =
