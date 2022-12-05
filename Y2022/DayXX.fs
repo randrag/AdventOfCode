@@ -1,23 +1,26 @@
 namespace AdventOfCode.Y2022
 
-open Helpers.Helpers
-
+open Helpers
 
 module DayXX =
 
-   let getInput () =
-      System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2022/inputXX.txt")
-
    module Part1 =
 
-      let go () =
-         getInput ()
+      let parse (lines : seq<string>) =
+         lines
+         |> Seq.toList
+
+      let go (year, day) runMode =
+         getInput (year, day) runMode
+         |> parse
 
    module Part2 =
 
-      let go () =
-         getInput ()
 
-   let run () =
-      Part1.go () |> printn
-      Part2.go () |> printn
+      let go (year, day) runMode =
+         getInput (year, day) runMode
+         |> Part1.parse
+
+   let run (year, day) =
+      Example |> Part1.go (year, day) |> printn
+      Full |> Part2.go (year, day) |> printn

@@ -25,9 +25,8 @@ module Day04 =
             | _ -> Unreachable ()
             )
 
-      let fullyContains ((a,b), (c,d)) =
-         (a <= c && b >= d)
-         || (c <= a && d >= b)
+      let fullyContains ((b1,e1), (b2,e2)) =
+         (b1 <= b2 && e1 >= e2) || (b2 <= b1 && e2 >= e1)
 
       let go (year, day) runMode =
          getInput (year, day) runMode
@@ -37,8 +36,8 @@ module Day04 =
 
    module Part2 =
 
-      let overlaps ((a,b),(c,d)) =
-         not ( c > b || d < a)
+      let overlaps ((b1,e1),(b2,e2)) =
+         not ( b2 > e1 || e2 < b1 )
 
       let go (year, day) runMode =
          getInput (year, day) runMode
