@@ -2,7 +2,7 @@ namespace AdventOfCode.Y2022
 
 open Helpers
 
-module DayXX =
+module Day06 =
 
    module Part1 =
 
