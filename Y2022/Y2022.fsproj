@@ -17,6 +17,7 @@
     <Compile Include="Day08.fs" />
     <Compile Include="Day09.fs" />
     <Compile Include="Day10.fs" />
+    <Compile Include="Day11.fs" />
     <Compile Include="DayXX.fs" />
     <Compile Include="Program.fs" />
     <Content Include="paket.references" />
@@ -40,6 +41,8 @@
     <Content Include="example08.txt" />
     <Content Include="example09.txt" />
     <Content Include="example10.txt" />
+    <Content Include="example11.txt" />
+    <Content Include="input11.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Helpers2\Helpers2.fsproj" />
