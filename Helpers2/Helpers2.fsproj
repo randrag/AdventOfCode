@@ -6,8 +6,8 @@
     <LangVersion>default</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Helpers.fs" />
     <Compile Include="Helpers.NoCaml.fs" />
+    <Compile Include="Helpers.fs" />
     <Content Include="paket.references" />
   </ItemGroup>
   <Import Project="..\.paket\Paket.Restore.targets" />

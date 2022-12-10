@@ -127,6 +127,7 @@ module NoCaml =
 
    module Map =
       let tryFind = Map.tryFind : 'a -> Map<'a,'b> -> Option<'b>
+      let toList = Map.toList : Map<'a,'b> -> List<'a * 'b>
 
    module Seq =
       /// Builds a list from the given collection.
