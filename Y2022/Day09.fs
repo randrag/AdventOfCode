@@ -67,13 +67,24 @@ module Day09 =
             |  1,  2 ->  1,  1
 
             | -2, -1 -> -1, -1
-            | -2,  1 -> -1, -1
+            | -2,  1 -> -1,  1
 
             | _ -> 0,0
 
          tx + mx, ty + my
 
+      let printGrid (mx, my) (headPos, tailPos) =
+         printfn ""
+         for y in [my .. -1 .. 0] do
+            printfn ""
+            for x in [0 .. mx] do
+               printf (
+                  if (x,y) = headPos then "H"
+                  elif (x,y) = tailPos then "T"
+                  else ".")
+
       let rec processMove (headPos : Pos, tailPos : Pos, tailPosL) (move : Move) =
+         printGrid (10,10) (headPos, tailPos)
          let headPos', move'O = stepHead headPos move
          let tailPos' = stepTail headPos' tailPos
          printfn $"\nhead: {headPos'},tail: {(tailPos')}, move: {move'O}"
@@ -97,5 +108,5 @@ module Day09 =
          |> Part1.parse
 
    let run (year, day) =
-      Example |> Part1.go (year, day) |> printn
+      Full |> Part1.go (year, day) |> printn
       //Full |> Part2.go (year, day) |> printn
