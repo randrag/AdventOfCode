@@ -63,8 +63,8 @@ module Day15 =
           LowestCostToReach = unvisitedNode.LowestKnownCostToReach
       }
 
-  /// fetches the unvisited node at the current position
-  /// converts it to visited and updates the maps
+  /// fetches the unvisited node at the current position,
+  /// converts it to visited and updates the maps,
   /// returns it and the maps
   let getCurrentNodeAndUpdateMaps (pos : Position) unvisitedNodes visitedNodes =
     let currentNode = Map.find pos unvisitedNodes

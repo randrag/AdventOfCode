@@ -16,6 +16,7 @@ module Day10 =
             match s with
             | ["noop"] -> NOP
             | ["addx"; si] -> ADDX (si |> String.parseToInt64X)
+            | _ -> failwith "unreachable"
             )
 
       let rec runInstruction

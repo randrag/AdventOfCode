@@ -33,6 +33,7 @@ module Day11 =
          match s with
          | "*" -> Multiply
          | "+" -> Add
+         | _ -> failwith "unreachable"
 
 
       let parse (lines : seq<string>) =
@@ -61,6 +62,7 @@ module Day11 =
                         |> fun s ->
                            match s with
                            | [s1; s2] -> { Operator = s1 |> parseOperator; Operand1 = Old; Operand2 = parseOperand s2 }
+                           | _ -> failwith "unreachable"
                     TestDivisor =
                         l4.Split "  Test: divisible by "
                         |> Array.toList
@@ -81,6 +83,7 @@ module Day11 =
                         |> String.parseToIntX
                     InspectionCount = 0
                         }
+                 | _ -> failwith "unreachable"
                ))
          |> List.toMap
 
@@ -181,6 +184,7 @@ module Day11 =
          match s with
          | "*" -> Multiply
          | "+" -> Add
+         | _ -> failwith "unreachable"
 
       let parse (lines : seq<string>) =
          lines
@@ -208,6 +212,7 @@ module Day11 =
                         |> fun s ->
                            match s with
                            | [s1; s2] -> { Operator = s1 |> parseOperator; Operand1 = Old; Operand2 = parseOperand s2 }
+                           | _ -> failwith "unreachable"
                     TestDivisor =
                         l4.Split "  Test: divisible by "
                         |> Array.toList
@@ -228,6 +233,7 @@ module Day11 =
                         |> String.parseToIntX
                     InspectionCount = 0
                         }
+                 | _ -> failwith "unreachable"
                ))
          |> List.toMap
 

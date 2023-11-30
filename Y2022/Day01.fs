@@ -1,13 +1,12 @@
 namespace AdventOfCode.Y2022
 
-//open AdventOfCode
 open Helpers
 open NoCaml
 
 module Day01 =
 
    let getInput () =
-      System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2022/example01.txt")
+      System.IO.File.ReadLines("/Users/roland/Code/AdventOfCode/Y2022/input01.txt")
       |> Seq.toList
       |> List.splitMultipleOnExcl (fun s -> s = "")
       |> List.map (List.map String.parseToInt64X)

@@ -1,5 +1,5 @@
 namespace Helpers
-
+open NoCaml
 
 [<AutoOpen>]
 module Helpers =
@@ -340,24 +340,27 @@ module List =
     (la,lb,lc,ld)
 
 
-  /// gives two lists back, excluding the splitting element
-  let splitOnceOnExcl (f : 'a -> bool) l =
-    let rec inner acc remaining =
-      match remaining with
-      | []                     -> (List.rev acc, [])
-      | head::tail when f head -> (List.rev acc, tail)
-      | head::tail             -> inner (head::acc) tail
+  /// Returns two lists, excluding the splitting element
+  let splitOnceOnExcl (f : 'a -> bool) (l : List<'a>)
+    : List<'a> * List<'a>
+    =
+      let rec inner acc remaining =
+        match remaining with
+        | []                     -> (List.rev acc, [])
+        | head::tail when f head -> (List.rev acc, tail)
+        | head::tail             -> inner (head::acc) tail
 
-    inner [] l
+      inner [] l
 
-  /// Splits a list into multiple lists at each position where an element matches the predicate
+  /// Splits a list into multiple lists at each position
+  /// where an element matches the predicate
   /// The element which matches the predicate is discarded
   let splitMultipleOnExcl (f : 'a -> bool) l : List<List<'a>> =
     let rec inner acc remaining =
       match remaining with
       | [] -> acc |> List.filter (List.isEmpty >> not) |> List.rev
-      | something ->
-          let (element, remaining) = splitOnceOnExcl f something
+      | l ->
+          let element, remaining = splitOnceOnExcl f l
           inner (element::acc) remaining
 
     inner [[]] l
