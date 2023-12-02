@@ -1,20 +1,21 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net8.0</TargetFramework>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <Compile Include="Day01.fs" />
-        <Compile Include="DayXX.fs" />
-        <Compile Include="Program.fs"/>
-        <Content Include="input01.txt" />
-        <Content Include="example01.txt" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Helpers2\Helpers2.fsproj" />
-    </ItemGroup>
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="paket.references" />
+    <Compile Include="Day01.fs" />
+    <Compile Include="DayXX.fs" />
+    <Compile Include="Program.fs" />
+    <Content Include="input01.txt" />
+    <Content Include="input02.txt" />
+    <Content Include="example02.txt" />
+    <Content Include="example01.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Helpers2\Helpers2.fsproj" />
+  </ItemGroup>
+  <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>

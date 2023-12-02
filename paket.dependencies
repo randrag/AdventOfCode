@@ -11,3 +11,6 @@ group Main
   nuget FParsec
   nuget FsRegEx
   nuget FSharp.Core
+  nuget Xunit
+  nuget Unquote
+  nuget Microsoft.NET.Test.Sdk
