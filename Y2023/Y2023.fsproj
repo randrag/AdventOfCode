@@ -7,12 +7,13 @@
   <ItemGroup>
     <Content Include="paket.references" />
     <Compile Include="Day01.fs" />
+    <Compile Include="Day02.fs" />
     <Compile Include="DayXX.fs" />
     <Compile Include="Program.fs" />
     <Content Include="input01.txt" />
     <Content Include="input02.txt" />
-    <Content Include="example02.txt" />
     <Content Include="example01.txt" />
+    <Content Include="example02.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Helpers2\Helpers2.fsproj" />
