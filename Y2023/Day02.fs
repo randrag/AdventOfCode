@@ -109,7 +109,7 @@ module Day02 =
 
          let requiredCubesByGame =
             games
-            |> List.map (fun (gameNumber, sets) ->
+            |> List.map (fun (_gameNumber, sets) ->
                   sets
                   |> List.fold
                         (fun acc draws ->
