@@ -17,10 +17,12 @@
     <Content Include="input02.txt" />
     <Content Include="input03.txt" />
     <Content Include="input04.txt" />
+    <Content Include="input05.txt" />
     <Content Include="example01.txt" />
     <Content Include="example02.txt" />
     <Content Include="example03.txt" />
     <Content Include="example04.txt" />
+    <Content Include="example05.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Helpers2\Helpers2.fsproj" />

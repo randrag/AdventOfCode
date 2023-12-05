@@ -2,7 +2,7 @@ namespace AdventOfCode.Y2023
 
 open Helpers
 
-module DayXX =
+module Day05 =
 
    // Part 1
    module Part1 =
@@ -38,7 +38,7 @@ module DayXX =
 
       [<Fact>]
       let t1 () =
-         let input = [""]
-         let expected = [""]
-         let actual = parse input
+         let input = 0
+         let expected = 0
+         let actual = 0
          test <@ expected = actual @>
