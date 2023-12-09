@@ -13,6 +13,7 @@
     <Compile Include="Day05.fs" />
     <Compile Include="Day06.fs" />
     <Compile Include="Day07.fs" />
+    <Compile Include="Day08.fs" />
     <Compile Include="DayXX.fs" />
     <Compile Include="Program.fs" />
     <Content Include="input01.txt" />
@@ -22,6 +23,7 @@
     <Content Include="input05.txt" />
     <Content Include="input06.txt" />
     <Content Include="input07.txt" />
+    <Content Include="input08.txt" />
     <Content Include="example01.txt" />
     <Content Include="example02.txt" />
     <Content Include="example03.txt" />
@@ -29,6 +31,7 @@
     <Content Include="example05.txt" />
     <Content Include="example06.txt" />
     <Content Include="example07.txt" />
+    <Content Include="example08.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Helpers2\Helpers2.fsproj" />
